@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <title>My experiment</title>
+        <script src="jspsych-6.1.0/jspsych.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-json-graph-button-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-json-graph-slider-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-external-html.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-image-slider-response.js"></script>
+        <link href="jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <link href="jspsych-6.1.0/css/graph.css" rel="stylesheet" type="text/css"></link>
+
+        <script src="JS/libs/g6.min.js"></script>
+        <script src="JS/libs/jquery-3.1.1.min.js"></script>
+        <script src="JS/libs/d3.min.js"></script>
+
+        <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+        <script src="https://d3js.org/d3-quadtree.v1.min.js"></script>
+        <script src="https://d3js.org/d3-timer.v1.min.js"></script>
+        <script src="https://d3js.org/d3-force.v2.min.js"></script>
+
+        <script src="JS/AdjacencyMat.js"></script>
+        <script src="JS/Bipartite.js"></script>
+        <script src="JS/network_d3-force.js"></script>
+
+
+    </head>
+    <body>
+
+    </body>
+    <script>
+
+        const BIPARTITE = 1;
+        const NODELINK = 2;
+        const ADJACENCY = 3;
+      /* create timeline */
+         var timeline = [];
+
+         /* define welcome message trial */
+         var welcome = {
+           type: "html-keyboard-response",
+           stimulus: "Welcome to the study. Press any key to begin."
+         };
+         timeline.push(welcome);
+
+
+         var check_consent = function(elem) {
+           if (document.getElementById('consent_checkbox').checked) {
+             return true;
+           }
+           else {
+             alert("If you wish to participate, you must check the box next to the statement 'I agree to participate in this study.'");
+             return false;
+           }
+           return false;
+         };
+
+
+         // declare the block.
+         var consent = {
+           type:'external-html',
+           url: "https://raw.githubusercontent.com/nschiele/JSONs/master/consent.html",
+           cont_btn: "start",
+           check_fn: check_consent
+         };
+         timeline.push(consent);
+
+
+         var intro = {
+          type: "html-button-response",
+          stimulus:
+              "<p>In this study, you will be shown a network using different visualization strategies</p>"+
+              "<p>The next few pages will contain a basic explaination of the visualization strategies"+
+              " and how the information is expressed.</p>" +
+              "<p>Press Continue to go to the next slide.</p>",
+          choices: ['Continue']
+          //post_trial_gap: 2000
+        };
+        timeline.push(intro);
+
+//style for internal div
+// style='float: left;'
+
+
+        var nl_instructions =
+        "<h2>Node Link Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>This is a node link visualization. Each node is representated as a circle. "+
+        "The connections between nodes are visualized as a arrow."+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/nl_ex.png'></img>"+
+        "</div>";
+
+        var am_instructions =
+        "<h2>Adjacency Matrix Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>This is an adjacency matrix visualization. Each node is represented as a row or column. "+
+        "The connections between nodes are visualized as a filled in box in the matrix. "+
+        "</p><p style='width: 700px;'>As in the previous example, the connections between nodes are directional. "+
+        "The row a filled in box corresponds with the source of the connection, "+
+        "and the column of a filled in box corresponds with the target of the connection"+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/am_ex.png'></img>"+
+        "</div>";
+
+        var bp_instructions =
+        "<h2>Bipartite Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>This is an bipartite visualization. Each node is represented twice on a vertical list of nodes. "+
+        "The connections between nodes are visualized as connections going between the two vertical list "+
+        "</p><p style='width: 700px;'>As in the previous examples, the connections between nodes are directional. "+
+        "the first column corresponds with the source of the connection, "+
+        "and the second column corresponds with the target of the connection"+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/bp_ex.png'></img>"+
+        "</div>";
+
+        var viz_compare =
+        "<h2>Comparing Visualizations</h2>"+
+        "<p></p><p></p>"+
+        "<div style='width: 900px;'>"+
+        "<div style='float: left;'><img src='img/nl_ex.png'  width='300' height='300'></img>"+
+        "</div>"+
+        "<div style='float: left;'><img src='img/am_ex.png' width='300' height='300'></img>"+
+        "</div>"+
+        "<div style='float: left;'><img src='img/bp_ex.png' width='300' height='300'></img>"+
+        "</div>"+
+        "<p style='width: 900px; text-align: center'>The three visualizations above all express the same information, just in different ways. "+
+        "Please take a moment to convince yourself that this is the case"+
+        "</p>";
+
+         var instructions = {
+              type: 'instructions',
+              pages: [
+                  nl_instructions,
+                  am_instructions,
+                  bp_instructions,
+                  viz_compare
+              ],
+              show_clickable_nav: true
+          }
+          timeline.push(instructions)
+
+
+
+        var opt = 10;
+        var lab = [...Array(opt).keys()];
+        lab.push("10+");
+        var sliderTestNL = {
+            type: 'json-graph-slider-response',
+            stimulus: {file:'https://raw.githubusercontent.com/nschiele/JSONs/master/Farz_100_8_8_90_ordered.json', type:NODELINK, highlight:['C', 'AB']},
+            labels: lab,
+            min: 0,
+            max: opt,
+            stimulus_width: 800,
+            stimulus_height: 800,
+            prompt: "<div style='width: 800px'><p>How many edges are in the shortest path between the two highlighted nodes?</p>"+
+            "<p></p><p><i>Select 0 if there is no path between the two highlighted nodes</i></p></div>"
+        };
+        timeline.push(sliderTestNL);
+
+
+
+
+          var opt = 10;
+          var lab = [...Array(opt).keys()];
+          lab.push("10+");
+        var sliderTestAM = {
+            type: 'json-graph-slider-response',
+            stimulus: {file:'https://raw.githubusercontent.com/nschiele/JSONs/master/Farz_100_8_8_90_ordered.json', type:ADJACENCY, highlight:['C', '-AB']},
+            labels: lab,
+            min: 0,
+            max: opt,
+            stimulus_width: 800,
+            stimulus_height: 800,
+            prompt: "<div style='width: 800px'><p>How many edges are in the shortest path between the two highlighted nodes?</p>"+
+            "<p></p><p><i>Select 0 if there is no path between the two highlighted nodes</i></p></div>"
+        };
+        timeline.push(sliderTestAM);
+
+
+        var opt = 10;
+        var lab = [...Array(opt).keys()];
+        lab.push("10+");
+      var sliderTestBP = {
+          type: 'json-graph-slider-response',
+          stimulus: {file:'https://raw.githubusercontent.com/nschiele/JSONs/master/Farz_100_8_8_90_ordered.json', type:BIPARTITE, highlight:['C_s', 'AB_t']},
+          labels: lab,
+          min: 0,
+          max: opt,
+          stimulus_width: 800,
+          stimulus_height: 800,
+          prompt: "<div style='width: 800px'><p>How many edges are in the shortest path between the two highlighted nodes?</p>"+
+          "<p></p><p><i>Select 0 if there is no path between the two highlighted nodes</i></p></div>"
+      };
+      timeline.push(sliderTestBP);
+
+
+
+      var buttonTestNL = {
+          type: 'json-graph-button-response',
+          stimulus: {file:'https://raw.githubusercontent.com/nschiele/JSONs/master/Farz_100_8_8_90.json', type:NODELINK, highlight:['C', 'AB']},
+          //base_node_color:"red",
+          stimulus_width: 800,
+          stimulus_height: 800,
+          choices: ['Yes', 'No'],
+          prompt: "<p>Are the two specified nodes connected?</p>"
+      };
+      timeline.push(buttonTestNL);
+
+
+      var buttonTestAM = {
+          type: 'json-graph-button-response',
+          stimulus: {file:'https://raw.githubusercontent.com/nschiele/JSONs/master/Farz_100_8_8_90.json', type:ADJACENCY, highlight:["C-","-C","-AB", "AB-"]},
+          //base_node_color:"red",
+          stimulus_width: 800,
+          stimulus_height: 800,
+          choices: ['Yes', 'No'],
+          prompt: "<p>Are the two specified nodes connected?</p>"
+      };
+      timeline.push(buttonTestAM);
+
+      var buttonTestBP = {
+          type: 'json-graph-button-response',
+          stimulus: {file:'https://raw.githubusercontent.com/nschiele/JSONs/master/Farz_100_8_8_90.json', type:BIPARTITE, highlight:['C_s', 'C_t', 'AB_s', 'AB_t']},
+          //base_node_color:"red",
+          stimulus_width: 800,
+          stimulus_height: 800,
+          choices: ['Yes', 'No'],
+          prompt: "<p>Are the two specified nodes connected?</p>"
+      };
+      timeline.push(buttonTestBP);
+
+
+
+
+
+         /* start the experiment */
+         jsPsych.init({
+           timeline: timeline,
+           on_finish: function() {
+              jsPsych.data.displayData();
+            }
+         });
+
+
+    </script>
+</html>

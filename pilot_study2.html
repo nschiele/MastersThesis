@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <title>My experiment</title>
+        <script src="jspsych-6.1.0/jspsych.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-json-graph-button-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-json-graph-slider-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-json-graph-question-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-likert.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-external-html.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-image-slider-response.js"></script>
+        <link href="jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <link href="jspsych-6.1.0/css/graph.css" rel="stylesheet" type="text/css"></link>
+
+        <script src="JS/libs/g6.min.js"></script>
+        <script src="JS/libs/jquery-3.1.1.min.js"></script>
+        <script src="JS/libs/d3.min.js"></script>
+
+        <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+        <script src="https://d3js.org/d3-quadtree.v1.min.js"></script>
+        <script src="https://d3js.org/d3-timer.v1.min.js"></script>
+        <script src="https://d3js.org/d3-force.v2.min.js"></script>
+
+        <script src="JS/AdjacencyMat.js"></script>
+        <script src="JS/Bipartite.js"></script>
+        <script src="JS/network_d3-force.js"></script>
+
+
+    </head>
+    <body>
+
+    </body>
+    <script>
+
+        const BIPARTITE = 1;
+        const NODELINK = 2;
+        const ADJACENCY = 3;
+
+        const TYPE = 3//Math.floor(Math.random() * 3) + 1;
+      /* create timeline */
+         var timeline = [];
+
+         /* define welcome message trial */
+         var welcome = {
+           type: "html-keyboard-response",
+           stimulus: "Welcome to the study. Press any key to begin."
+         };
+         timeline.push(welcome);
+
+
+         var check_consent = function(elem) {
+           if (document.getElementById('consent_checkbox').checked) {
+             return true;
+           }
+           else {
+             alert("If you wish to participate, you must check the box next to the statement 'I agree to participate in this study.'");
+             return false;
+           }
+           return false;
+         };
+
+
+         // declare the block.
+         var consent = {
+           type:'external-html',
+           url: "https://raw.githubusercontent.com/nschiele/JSONs/master/consent.html",
+           cont_btn: "start",
+           check_fn: check_consent
+         };
+         timeline.push(consent);
+
+
+
+
+//style for internal div
+// style='float: left;'
+
+        var intro =   "<p>In this study, you will be shown a network using different visualization strategies</p>"+
+                      "<p>The next few pages will contain a basic explaination of the visualization strategies"+
+                      " and how the information is expressed.</p>" +
+                      "<p>Press Continue to go to the next slide.</p>";
+
+        var nl_instructions =
+        "<h2>Node Link Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>This is a node link visualization. Each node is representated as a circle. "+
+        "The connections between nodes are visualized as a arrow."+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/nl_ex.png'></img>"+
+        "</div>";
+
+        var am_instructions_1 =
+        "<h2>Adjacency Matrix Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>This is an adjacency matrix visualization. Each node is represented as a row or column. "+
+        "The connections between nodes are visualized as a filled in box in the matrix. "+
+        "</p><p style='width: 700px;'>The connections between nodes are directional. "+
+        "The <b>row</b> a filled in box corresponds with the source of the connection, "+
+        "and the <b>column</b> of a filled in box corresponds with the target of the connection"+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/am_ex.png'></img>"+
+        "</div>";
+
+        var am_instructions_2 =
+        "<h2>Adjacency Matrix Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>Here we see a single highlighted node, in this case, the \"second\" node of this network."+
+        "The filled in boxes in the row correspond with outgoing edges. So we see that there is a single outgoing edge from the \"second\" node to the \"first\" node "+
+        "</p><p style='width: 700px;'>The filled in boxes in the column correspond with incoming edges. "+
+        "So we can see that the highlighted node has 3 incomming edges. "+
+        "and the column of a filled in box corresponds with the target of the connection"+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/am_ex_hl.png'></img>"+
+        "</div>";
+
+        var bp_instructions =
+        "<h2>Bipartite Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>This is an bipartite visualization. Each node is represented twice on a vertical list of nodes. "+
+        "The connections between nodes are visualized as connections going between the two vertical list "+
+        "</p><p style='width: 700px;'>As in the previous examples, the connections between nodes are directional. "+
+        "the first column corresponds with the source of the connection, "+
+        "and the second column corresponds with the target of the connection"+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/bp_ex.png'></img>"+
+        "</div>";
+
+
+        ins_pages = [intro];
+
+
+        switch(TYPE){
+          case 1:
+            ins_pages.push(bp_instructions);
+            break;
+          case 2:
+            ins_pages.push(nl_instructions);
+            break;
+          case 3:
+            ins_pages.push(am_instructions_1);
+            ins_pages.push(am_instructions_2);
+            break;
+          }
+
+
+        console.log(ins_pages);
+
+         var instructions = {
+              type: 'instructions',
+              pages: ins_pages,
+              show_clickable_nav: true
+          }
+          timeline.push(instructions)
+
+
+
+        var file_list = ['https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_20_1_2_ordered.json',
+                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_20_2_2_ordered.json',
+                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_20_4_2_ordered.json',
+                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_100_1_4_ordered.json',
+                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_100_2_4_ordered.json',
+                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_100_4_4_ordered.json']
+
+
+       var scale = [
+         "Very Difficult",
+         "Somewhat Difficult",
+         "Neutral",
+         "Somewhat Easy",
+         "Very Easy"
+          ];
+
+       var likert_page = {
+         type: 'survey-likert',
+         questions: [
+           {prompt: "How difficult was the previous question?", labels: scale}
+         ]
+          };
+
+        var test_procedures = [];
+
+        //SP = Shortest Path
+        var SP_stimuli = [
+          {stimulus: {file:file_list[0], type:TYPE, highlight:['C-', '-Q']}},
+          {stimulus: {file:file_list[1], type:TYPE, highlight:['C-', '-Q']}},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:['C-', '-Q']}},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:['C-', '-Q']}},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:['C-', '-Q']}},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:['C-', '-Q']}}
+           ]
+
+        var SP_test = {
+          type: "json-graph-question-response",
+          stimulus: jsPsych.timelineVariable('stimulus'),
+          prompt: "<div style='width: 800px'><p>How many edges are in the shortest path between the two highlighted nodes?</p>"+
+          "<p></p><p><i>Select 0 if there is no path between the two highlighted nodes</i></p></div>",
+          stimulus_width: 800,
+          stimulus_height: 800
+        }
+
+
+        var SP_test_procedure = {
+          timeline: [SP_test, likert_page],
+          randomize_order: true,
+          timeline_variables: SP_stimuli
+        }
+
+        test_procedures.push(SP_test_procedure);
+
+
+        //IL = Incoming Links
+        var IL_stimuli = [
+          {stimulus: {file:file_list[0], type:TYPE, highlight:['F-F']}},
+          {stimulus: {file:file_list[1], type:TYPE, highlight:['F-F']}},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:['F-F']}},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:['F-F']}},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:['F-F']}},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:['F-F']}}
+           ]
+
+        var IL_test = {
+          type: "json-graph-question-response",
+          stimulus: jsPsych.timelineVariable('stimulus'),
+          prompt: "<div style='width: 800px'><p>How many incoming edges does the highlighted node have?</p>"+
+          "</div>",
+          stimulus_width: 800,
+          stimulus_height: 800
+        }
+
+
+        var IL_test_procedure = {
+          timeline: [IL_test, likert_page],
+          randomize_order: true,
+          timeline_variables: IL_stimuli
+        }
+
+        test_procedures.push(IL_test_procedure);
+
+
+
+        //CN = Common Neighbors
+
+
+        var CN_stimuli = [
+          {stimulus: {file:file_list[0], type:TYPE, highlight:['F-F', 'B-B']}},
+          {stimulus: {file:file_list[1], type:TYPE, highlight:['F-F', 'B-B']}},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:['F-F', 'B-B']}},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:['F-F', 'BB-BB']}},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:['F-F', 'BB-BB']}},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:['F-F', 'BB-BB']}}
+           ]
+
+        var CN_test = {
+          type: "json-graph-question-response",
+          stimulus: jsPsych.timelineVariable('stimulus'),
+          prompt: "<div style='width: 800px'><p>How many common neighbors do the two highlighted nodes have?</p>"+
+          "</div>",
+          stimulus_width: 800,
+          stimulus_height: 800
+        }
+
+
+        var CN_test_procedure = {
+          timeline: [CN_test, likert_page],
+          randomize_order: true,
+          timeline_variables: CN_stimuli
+        }
+
+        test_procedures.push(CN_test_procedure);
+
+
+        //SG = Same Group
+
+        var SG_stimuli = [
+          {stimulus: {file:file_list[0], type:TYPE, highlight:['F-F', 'B-B']}},
+          {stimulus: {file:file_list[1], type:TYPE, highlight:['F-F', 'B-B']}},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:['F-F', 'B-B']}},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:['F-F', 'BB-BB']}},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:['F-F', 'BB-BB']}},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:['F-F', 'BB-BB']}}
+           ]
+
+        var SG_test = {
+          type: "json-graph-button-response",
+          stimulus: jsPsych.timelineVariable('stimulus'),
+          prompt: "<div style='width: 800px'><p>Are the two highlighted nodes a part of the same group?</p>"+
+          "</div>",
+          choices: ['Yes', 'No'],
+          stimulus_width: 800,
+          stimulus_height: 800
+        }
+
+
+        var SG_test_procedure = {
+          timeline: [SG_test, likert_page],
+          randomize_order: true,
+          timeline_variables: SG_stimuli
+        }
+
+        test_procedures.push(SG_test_procedure);
+
+
+
+
+        //Adding the tests to the timeline in random order
+        test_procedures = jsPsych.randomization.repeat(test_procedures, 1);
+        timeline.push(test_procedures[0]);
+        timeline.push(test_procedures[1]);
+        timeline.push(test_procedures[2]);
+        //timeline.push(test_procedures[3]);
+
+
+
+
+
+
+
+         /* start the experiment */
+         jsPsych.init({
+           timeline: timeline,
+           on_finish: function() {
+              jsPsych.data.displayData();
+            }
+         });
+
+
+    </script>
+</html>
