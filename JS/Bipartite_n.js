@@ -64,11 +64,12 @@ function renderBIGraph(jsonFileData, height, width, highlight, base_node_color, 
 
         //Change one node to a new color
 				for (var h = 0; h < highlight.length; h++){
-					var change = highlight[h];
-				//console.log(change);
+					var change = highlight[h].split("-");
+						change[0] = change[0]+"_s";
+						change[1] = change[1]+"_t";
 					var nodes = bipartiteData.nodes;
 					nodes.forEach(node => {
-						if(node.id.localeCompare(change) === 0 ){
+						if(node.id.localeCompare(change[0]) === 0 ||node.id.localeCompare(change[1]) === 0 ){
 							var newStyle =  {lineWidth: 2,fill: highlight_node_color};
 							node.style = newStyle;
 						}

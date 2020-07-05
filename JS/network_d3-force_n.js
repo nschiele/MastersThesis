@@ -42,7 +42,7 @@ const nodes = data.nodes.map(d => Object.create(d));
 
 const simulation = d3.forceSimulation(nodes)
     .force("link", d3.forceLink(links).id(d => d.id))
-    .force("charge", d3.forceManyBody().strength(-200))
+    .force("charge", d3.forceManyBody().strength(-8))
     .force("center", d3.forceCenter(width / 2, height / 2));
 
 
@@ -85,14 +85,23 @@ const node = svg.append("g")
   .enter().append("circle")
 		.attr("stroke", function(d){
 			for(var h = 0; h < highlights.length; h++){
-				if(d.id.localeCompare(highlights[h]) === 0 || d.id.localeCompare(highlights[h]) === 0){
+				var hl = highlights[h].split("-");
+				if(d.id.localeCompare(hl[0]) === 0 || d.id.localeCompare(hl[1]) === 0){
 					return "#000";
 				}
 			}
 			return "#fff";
 		})
-    .attr("r", 5)
-    .attr("fill", color)
+    .attr("r", function(d){
+			for(var h = 0; h < highlights.length; h++){
+				var hl = highlights[h].split("-");
+				if(d.id.localeCompare(hl[0]) === 0 || d.id.localeCompare(hl[1]) === 0){
+					return 6;
+				}
+			}
+			return 5;
+		})
+    .attr("fill", d => color(d.group))
     .call(drag(simulation));
 
 

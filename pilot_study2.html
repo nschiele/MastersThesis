@@ -25,9 +25,9 @@
         <script src="https://d3js.org/d3-timer.v1.min.js"></script>
         <script src="https://d3js.org/d3-force.v2.min.js"></script>
 
-        <script src="JS/AdjacencyMat.js"></script>
-        <script src="JS/Bipartite.js"></script>
-        <script src="JS/network_d3-force.js"></script>
+        <script src="JS/AdjacencyMat_n.js"></script>
+        <script src="JS/Bipartite_n.js"></script>
+        <script src="JS/network_d3-force_n.js"></script>
 
 
     </head>
@@ -39,8 +39,10 @@
         const BIPARTITE = 1;
         const NODELINK = 2;
         const ADJACENCY = 3;
+        const stimu_h = 700;
+        const stimu_w = 700;
 
-        const TYPE = 3//Math.floor(Math.random() * 3) + 1;
+        const TYPE = 1//Math.floor(Math.random() * 3) + 1;
       /* create timeline */
          var timeline = [];
 
@@ -67,7 +69,7 @@
          // declare the block.
          var consent = {
            type:'external-html',
-           url: "test.html",
+           url: "bp_consent.html",
            cont_btn: "start",
            check_fn: check_consent
          };
@@ -105,6 +107,7 @@
         "<div><img src='img/am_ex.png'></img>"+
         "</div>";
 
+
         var am_instructions_2 =
         "<h2>Adjacency Matrix Visualization</h2>"+
         "<p></p><p></p>"+
@@ -115,6 +118,17 @@
         "and the column of a filled in box corresponds with the target of the connection"+
         "<div style='width: 700px;'>"+
         "<div><img src='img/am_ex_hl.png'></img>"+
+        "</div>";
+
+        var am_instructions_3 =
+        "<h2>Adjacency Matrix Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>Each filled in box represents a single edge. "+
+        "The edge pointed to in the visualization below represents an edge from the 9th node (as it is in the 9th row)<br/> "+
+        "to the 10th node (as it is in the 10th column) "+
+        "</p>"+
+        "<div style='width: 700px;'>"+
+        "<img src='img/am_ex_ed.png'></img>"+
         "</div>";
 
         var bp_instructions =
@@ -143,6 +157,7 @@
           case 3:
             ins_pages.push(am_instructions_1);
             ins_pages.push(am_instructions_2);
+            ins_pages.push(am_instructions_3);
             break;
           }
 
@@ -158,11 +173,11 @@
 
 
 
-        var file_list = ['https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_20_1_2_ordered.json',
-                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_20_2_2_ordered.json',
-                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_20_4_2_ordered.json',
-                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_100_1_4_ordered.json',
-                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_100_2_4_ordered.json',
+        var file_list = ['JSON/pilot_20_1_2_ordered.json',
+                         'JSON/pilot_20_2_2_ordered.json',
+                         'JSON/pilot_20_4_2_ordered.json',
+                         'JSON/pilot_100_1_4_ordered.json',
+                         'JSON/pilot_100_2_4_ordered.json',
                          'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_100_4_4_ordered.json']
 
 
@@ -186,11 +201,11 @@
         //SP = Shortest Path
         var SP_stimuli = [
           {stimulus: {file:file_list[0], type:TYPE, highlight:['C-', '-Q']}},
-          {stimulus: {file:file_list[1], type:TYPE, highlight:['C-', '-Q']}},
-          {stimulus: {file:file_list[2], type:TYPE, highlight:['C-', '-Q']}},
-          {stimulus: {file:file_list[3], type:TYPE, highlight:['C-', '-Q']}},
-          {stimulus: {file:file_list[4], type:TYPE, highlight:['C-', '-Q']}},
-          {stimulus: {file:file_list[5], type:TYPE, highlight:['C-', '-Q']}}
+          {stimulus: {file:file_list[1], type:TYPE, highlight:['C-', '-K']}},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:['K-', '-A']}},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:['AT-', '-Q']}},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:['Z-', '-F']}},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:['A-', '-B']}}
            ]
 
         var SP_test = {
@@ -198,8 +213,8 @@
           stimulus: jsPsych.timelineVariable('stimulus'),
           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path between the two highlighted nodes?</p>"+
           "<p></p><p><i>Select 0 if there is no path between the two highlighted nodes</i></p></div>",
-          stimulus_width: 800,
-          stimulus_height: 800
+          stimulus_width: stimu_w,
+          stimulus_height: stimu_h
         }
 
 
@@ -227,8 +242,8 @@
           stimulus: jsPsych.timelineVariable('stimulus'),
           prompt: "<div style='width: 800px'><p>How many incoming edges does the highlighted node have?</p>"+
           "</div>",
-          stimulus_width: 800,
-          stimulus_height: 800
+          stimulus_width: stimu_w,
+          stimulus_height: stimu_h
         }
 
 
@@ -259,8 +274,8 @@
           stimulus: jsPsych.timelineVariable('stimulus'),
           prompt: "<div style='width: 800px'><p>How many common neighbors do the two highlighted nodes have?</p>"+
           "</div>",
-          stimulus_width: 800,
-          stimulus_height: 800
+          stimulus_width: stimu_w,
+          stimulus_height: stimu_h
         }
 
 
@@ -290,8 +305,8 @@
           prompt: "<div style='width: 800px'><p>Are the two highlighted nodes a part of the same group?</p>"+
           "</div>",
           choices: ['Yes', 'No'],
-          stimulus_width: 800,
-          stimulus_height: 800
+          stimulus_width: stimu_w,
+          stimulus_height: stimu_h
         }
 
 
@@ -311,18 +326,25 @@
         timeline.push(test_procedures[0]);
         timeline.push(test_procedures[1]);
         timeline.push(test_procedures[2]);
-        //timeline.push(test_procedures[3]);
+        timeline.push(test_procedures[3]);
 
 
 
 
 
+        function saveData(name, data){
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify({filename: name, filedata: data}));
+        }
 
 
          /* start the experiment */
          jsPsych.init({
            timeline: timeline,
            on_finish: function() {
+              saveData("experiment_data", jsPsych.data.get().csv());
               jsPsych.data.displayData();
             }
          });

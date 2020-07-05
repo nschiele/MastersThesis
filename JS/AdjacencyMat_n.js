@@ -3,11 +3,13 @@
 
             var svg;
             var highlights;
-            var nodeColor;
+            var hNodeColor, nodeColor;
 
-            function adjacency(jsonFileData, hl, node_color) {
+            function adjacency(jsonFileData, hl, node_color, hl_node_color) {
                 highlights = hl;
                 nodeColor = node_color;
+                hNodeColor = hl_node_color;
+
                 svg = d3.select("svg#AMSVG");
               //console.log(clicked_edges);
             //fetch(GraphJSON)
@@ -17,6 +19,29 @@
 
 				              createAdjacencyMatrix(jsonFileData["nodes"],jsonFileData["edges"]);
 			     }
+
+                       //colorChannelA and colorChannelB are ints ranging from 0 to 255
+            function colorChannelMixer(colorChannelA, colorChannelB, amountToMix){
+                var channelA = colorChannelA*amountToMix;
+                var channelB = colorChannelB*(1-amountToMix);
+                return parseInt(channelA+channelB);
+            }
+            //rgbA and rgbB are arrays, amountToMix ranges from 0.0 to 1.0
+            //example (red): rgbA = [255,0,0]
+            function colorMixer(rgbA, rgbB, amountToMix){
+                var r = colorChannelMixer(rgbA[0],rgbB[0],amountToMix);
+                var g = colorChannelMixer(rgbA[1],rgbB[1],amountToMix);
+                var b = colorChannelMixer(rgbA[2],rgbB[2],amountToMix);
+                return "rgb("+r+","+g+","+b+")";
+            }
+            function hexToRgb(hex) {
+              var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+              return result ? [
+                parseInt(result[1], 16),
+                parseInt(result[2], 16),
+                parseInt(result[3], 16)
+              ] : null;
+            }
 
 
 
@@ -65,7 +90,23 @@
 				.attr("height",height)
 				.attr("x", d=> d.x*width)
 				.attr("y", d=> d.y*height)
-				.style("fill-opacity", d=> d.weight * .2);
+				.style("fill-opacity", function(d){
+          var sd = d.id.split('-');
+          for(var h = 0; h < highlights.length; h++){
+
+            var hp = highlights[h].split("-");
+            //console.log(highlights[h] + "    " + hp)
+            //console.log(hp)
+              if(d.weight != 0){
+                return 1;
+              } else  if(sd[0].localeCompare(hp[0]) === 0 || sd[1].localeCompare(hp[1]) === 0) {
+                //console.log(hp + "    " + sd + "    " +  h + "    " +  highlights)
+                return .3;
+              }
+          }
+          return 0;
+
+        });
 
 
 				d3.selectAll("rect.grid").style("fill", nodeColor);
@@ -104,18 +145,24 @@
 			//     .style("font-size","10px")
 
 				// Select a node specifically
-				d3.selectAll("rect").style("stroke-width", function(p) {
+				d3.selectAll("rect.grid").style("fill", function(p) {
           //console.log("-AB".split('-'));
           var sp = p.id.split('-');
           for(var h = 0; h < highlights.length; h++){
           var hp = highlights[h].split("-");
           //console.log(highlights[h] + "    " + hp)
           //console.log(hp)
+
             if(sp[0].localeCompare(hp[0]) === 0 || sp[1].localeCompare(hp[1]) === 0){
-              return "4px";
+              //console.log(p);
+              if(p.weight != 0){
+                return colorMixer(hexToRgb(hNodeColor), hexToRgb(nodeColor), .4);
+                //colorMixer(hNodeColor, nodeColor, .9);
+              }
+              return hNodeColor;
             }
           }
-          return "1px";
+          return nodeColor;
 				  //return p.id.includes('AL') ? "4px" : "1px"
 				});
 
