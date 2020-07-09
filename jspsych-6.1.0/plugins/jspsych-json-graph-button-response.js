@@ -165,11 +165,11 @@ jsPsych.plugins["json-graph-button-response"] = (function() {
     // <script src="JS/network_d3-force.js"></script>
 
 
-    var height, width, nodeColor;
+    var height, widthG, nodeColor;
     if(trial.stimulus_width == null){
-      width = 500;
+      widthG = 500;
     } else {
-      width = trial.stimulus_width;
+      widthG = trial.stimulus_width;
     }
     if(trial.base_node_color == null){
       nodeColor = "#00ACD9";
@@ -188,28 +188,28 @@ jsPsych.plugins["json-graph-button-response"] = (function() {
     }
 
 
-
     var html;
     switch(trial.stimulus.type){
       case 1:
         html = '<div id="mountNode"></div>';
         fetch(trial.stimulus.file)
           .then(response => response.json())
-          .then(data => renderBIGraph(data, height, width, trial.stimulus.highlight, nodeColor, hNodeColor));
+          .then(data => renderBIGraph(data, height, widthG, trial.stimulus.highlight, nodeColor, hNodeColor));
         break;
       case 2:
-        html = '<svg id="NLSVG" width='+width+' height='+height+'></svg> ';
+        html = '<svg id="NLSVG" width='+widthG+' height='+height+'></svg> ';
         fetch(trial.stimulus.file)
           .then(response => response.json())
           .then(data => renderNLGraph(data, trial.stimulus.highlight));
         break;
       case 3:
-        html = '<svg id="AMSVG" width='+width+' height='+height+'></svg>';
+        html = '<svg id="AMSVG" width='+widthG+' height='+height+'></svg>';
         fetch(trial.stimulus.file)
           .then(response => response.json())
-          .then(data => adjacency(data, trial.stimulus.highlight, nodeColor));
+          .then(data => adjacency(data, trial.stimulus.highlight, nodeColor, hNodeColor));
         break;
     }
+
 
 
 

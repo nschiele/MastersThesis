@@ -42,7 +42,7 @@
         const stimu_h = 700;
         const stimu_w = 700;
 
-        const TYPE = 1//Math.floor(Math.random() * 3) + 1;
+        const TYPE = 2//Math.floor(Math.random() * 3) + 1;
       /* create timeline */
          var timeline = [];
 
@@ -176,9 +176,9 @@
         var file_list = ['JSON/pilot_20_1_2_ordered.json',
                          'JSON/pilot_20_2_2_ordered.json',
                          'JSON/pilot_20_4_2_ordered.json',
-                         'JSON/pilot_100_1_4_ordered.json',
-                         'JSON/pilot_100_2_4_ordered.json',
-                         'https://raw.githubusercontent.com/nschiele/JSONs/master/pilot_100_4_4_ordered.json']
+                         'JSON/pilot_50_1_3_ordered.json',
+                         'JSON/pilot_50_2_3_ordered.json',
+                         'JSON/pilot_50_4_3_ordered.json']
 
 
        var scale = [
@@ -192,7 +192,7 @@
        var likert_page = {
          type: 'survey-likert',
          questions: [
-           {prompt: "How difficult was the previous question?", labels: scale}
+           {prompt: "How difficult was the previous question?", labels: scale, required: true}
          ]
           };
 
@@ -261,19 +261,24 @@
 
 
         var CN_stimuli = [
-          {stimulus: {file:file_list[0], type:TYPE, highlight:['F-F', 'B-B']}},
-          {stimulus: {file:file_list[1], type:TYPE, highlight:['F-F', 'B-B']}},
-          {stimulus: {file:file_list[2], type:TYPE, highlight:['F-F', 'B-B']}},
-          {stimulus: {file:file_list[3], type:TYPE, highlight:['F-F', 'BB-BB']}},
-          {stimulus: {file:file_list[4], type:TYPE, highlight:['F-F', 'BB-BB']}},
-          {stimulus: {file:file_list[5], type:TYPE, highlight:['F-F', 'BB-BB']}}
+          {stimulus: {file:file_list[0], type:TYPE, highlight:['F-F', 'B-B']},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and B?</p></div>"},
+          {stimulus: {file:file_list[1], type:TYPE, highlight:['F-F', 'B-B']},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and B?</p></div>"},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:['F-F', 'B-B']},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and B?</p></div>"},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:['F-F', 'BB-BB']},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and BB?</p></div>"},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:['F-F', 'BB-BB']},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and BB?</p></div>"},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:['F-F', 'BB-BB']},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and BB?</p></div>"}
            ]
 
         var CN_test = {
           type: "json-graph-question-response",
           stimulus: jsPsych.timelineVariable('stimulus'),
-          prompt: "<div style='width: 800px'><p>How many common neighbors do the two highlighted nodes have?</p>"+
-          "</div>",
+          prompt: jsPsych.timelineVariable('prompt'),
           stimulus_width: stimu_w,
           stimulus_height: stimu_h
         }

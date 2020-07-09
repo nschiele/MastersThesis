@@ -1,15 +1,16 @@
 function renderBIGraph(jsonFileData, height, width, highlight, base_node_color, highlight_node_color){
-		console.log(height + "    " +  width);
+		const ColorHighlights = false;
+		//console.log(height + "    " +  width);
 		var nodeColor = base_node_color;
 		var remoteData = jsonFileData;//await response.json();
-		console.log("called render");
+		//console.log("called render");
 
-        var inc = Math.round((height - 100)/remoteData['nodes'].length);
+        var inc = Math.round((height -40)/remoteData['nodes'].length);
 
         var bipartiteData = {nodes:[],edges:[]}
         remoteData['nodes'].forEach((item, i) => {
-          bipartiteData['nodes'].push({id:item.id+"_s",x:100,y:50 + i*inc});
-          bipartiteData['nodes'].push({id:item.id+"_t",x:width-100,y:50 + i*inc});
+          bipartiteData['nodes'].push({id:item.id+"_s",x:50,y:i*inc+20});
+          bipartiteData['nodes'].push({id:item.id+"_t",x:width-50,y:i*inc+20});
         });
         remoteData['edges'].forEach((item, i) => {
           bipartiteData['edges'].push({source:item.source+"_s",target:item.target+"_t"});
@@ -70,8 +71,15 @@ function renderBIGraph(jsonFileData, height, width, highlight, base_node_color, 
 					var nodes = bipartiteData.nodes;
 					nodes.forEach(node => {
 						if(node.id.localeCompare(change[0]) === 0 ||node.id.localeCompare(change[1]) === 0 ){
-							var newStyle =  {lineWidth: 2,fill: highlight_node_color};
+							//UNCOMMENT FOR COLOR VERSION
+							var newStyle = {lineWidth: 2,fill: ColorHighlights ? highlight_node_color : nodeColor};
 							node.style = newStyle;
+							//console.log(node.id);
+							node.label = node.id.split("_")[0];
+							node.labelCfg = {
+								offset: 10,
+								position: node.id.endsWith('_s')? 'left' : 'right'
+							};
 						}
 					});
 				}

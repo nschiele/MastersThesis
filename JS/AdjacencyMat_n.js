@@ -1,6 +1,6 @@
 
 
-
+            const ColorHighlights = false;
             var svg;
             var highlights;
             var hNodeColor, nodeColor;
@@ -101,7 +101,8 @@
                 return 1;
               } else  if(sd[0].localeCompare(hp[0]) === 0 || sd[1].localeCompare(hp[1]) === 0) {
                 //console.log(hp + "    " + sd + "    " +  h + "    " +  highlights)
-                return .3;
+                //COLOR VERSION, CHANGE TO POINT 3
+                return ColorHighlights ? .3 : 0;
               }
           }
           return 0;
@@ -113,58 +114,89 @@
 
         d3.select("svg").append("text")
           .attr("x", width*(nodes.length/2) + 30)
-          .attr("y", 35)
+          .attr("y", 18)
           .text("Target Node");
 
         d3.select("svg").append("text")
-          .attr("transform", "translate(35, "+ (height*(nodes.length/2) + 70) +") rotate(-90)")
+          .attr("transform", "translate(18, "+ (height*(nodes.length/2) + 70) +") rotate(-90)")
           .text("Source Node");
 
 
-			// d3.select("svg")
-			//     .append("g")
-			//     .attr("transform","translate(50,45)")
-			//     .selectAll("text")
-			//     .data(nodes)
-			//     .enter()
-			//     .append("text")
-			//     .attr("x", (d,i) => i * 35 + 17.5)
-			//     .text(d => d.id)
-			//     .style("text-anchor","middle")
-			//     .style("font-size","10px")
-			//
-			// d3.select("svg")
-			//     .append("g").attr("transform","translate(45,50)")
-			//     .selectAll("text")
-			//     .data(nodes)
-			//     .enter()
-			//     .append("text")
-			//     .attr("y",(d,i) => i * 35 + 17.5)
-			//     .text(d => d.id)
-			//     .style("text-anchor","end")
-			//     .style("font-size","10px")
 
-				// Select a node specifically
-				d3.selectAll("rect.grid").style("fill", function(p) {
-          //console.log("-AB".split('-'));
-          var sp = p.id.split('-');
-          for(var h = 0; h < highlights.length; h++){
-          var hp = highlights[h].split("-");
-          //console.log(highlights[h] + "    " + hp)
-          //console.log(hp)
 
-            if(sp[0].localeCompare(hp[0]) === 0 || sp[1].localeCompare(hp[1]) === 0){
-              //console.log(p);
-              if(p.weight != 0){
-                return colorMixer(hexToRgb(hNodeColor), hexToRgb(nodeColor), .4);
-                //colorMixer(hNodeColor, nodeColor, .9);
+
+
+
+      // Select a node specifically - TEXT VERSION
+      d3.select("svg")
+          .append("g")
+          .attr("transform","translate(50,45)")
+          .selectAll("text")
+          .data(nodes)
+          .enter()
+          .append("text")
+          .attr("x", (d,i) => i * width + width/2)
+          .text(d => d.id)
+          .style("text-anchor","middle")
+          .style("font-size", function(d){
+            console.log(d);
+            for(var h = 0; h < highlights.length; h++){
+              var hp = highlights[h].split("-");
+              if(d.id.localeCompare(hp[1]) === 0){
+                return nodes.length == 20 ? "20px" : "12px";
               }
-              return hNodeColor;
             }
-          }
-          return nodeColor;
-				  //return p.id.includes('AL') ? "4px" : "1px"
-				});
+            return "0px";
+          })
+
+          d3.select("svg")
+    			    .append("g").attr("transform","translate(45,50)")
+    			    .selectAll("text")
+    			    .data(nodes)
+    			    .enter()
+    			    .append("text")
+    			    .attr("y",(d,i) => i * height + height/1.3)
+    			    .text(d => d.id)
+    			    .style("text-anchor","end")
+              .style("font-size", function(d){
+                console.log(d);
+                for(var h = 0; h < highlights.length; h++){
+                  var hp = highlights[h].split("-");
+                  if(d.id.localeCompare(hp[0]) === 0){
+                    return nodes.length == 20 ? "20px" : "12px";
+                  }
+                }
+                return "0px";
+              })
+
+        //END OF TEXT VERSION
+
+				// Select a node specifically - COLOR VERSION
+        if(ColorHighlights){
+  				d3.selectAll("rect.grid").style("fill", function(p) {
+            //console.log("-AB".split('-'));
+            var sp = p.id.split('-');
+            for(var h = 0; h < highlights.length; h++){
+            var hp = highlights[h].split("-");
+            //console.log(highlights[h] + "    " + hp)
+            //console.log(hp)
+
+              if(sp[0].localeCompare(hp[0]) === 0 || sp[1].localeCompare(hp[1]) === 0){
+
+                //console.log(p);
+                if(p.weight != 0){
+                  return colorMixer(hexToRgb(hNodeColor), hexToRgb(nodeColor), .4);
+                  //colorMixer(hNodeColor, nodeColor, .9);
+                }
+                return hNodeColor;
+              }
+            }
+            return nodeColor;
+  				  //return p.id.includes('AL') ? "4px" : "1px"
+  				});
+        }
+        //END OF COLOR VERSION
+
 
 				//Select an edge specifically
 				// d3.selectAll("rect").style("stroke-width", function(p) {
