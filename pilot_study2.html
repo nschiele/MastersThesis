@@ -42,7 +42,7 @@
         const stimu_h = 700;
         const stimu_w = 700;
 
-        const TYPE = Math.floor(Math.random() * 3) + 1;
+        const TYPE = 2//Math.floor(Math.random() * 3) + 1;
 
       /* create timeline */
          var timeline = [];
@@ -330,30 +330,34 @@
         //Adding the tests to the timeline in random order
         test_procedures = jsPsych.randomization.repeat(test_procedures, 1);
         timeline.push(test_procedures[0]);
-        timeline.push(test_procedures[1]);
-        timeline.push(test_procedures[2]);
-        timeline.push(test_procedures[3]);
+        // timeline.push(test_procedures[1]);
+        // timeline.push(test_procedures[2]);
+        // timeline.push(test_procedures[3]);
 
 
 
 
 
-        function saveData(name, data){
+        function saveData() {
           var xhr = new XMLHttpRequest();
-          xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+          xhr.open('POST', 'write_data.php'); // change 'write_data.php' to point to php script.
           xhr.setRequestHeader('Content-Type', 'application/json');
-          xhr.send(JSON.stringify({filename: name, filedata: data}));
+          xhr.onload = function() {
+            if(xhr.status == 200){
+              var response = JSON.parse(xhr.responseText);
+              console.log(response.success);
+            }
+          };
+          xhr.send(jsPsych.data.get().json());
         }
 
 
          /* start the experiment */
          jsPsych.init({
-           timeline: timeline,
-           on_finish: function() {
-              saveData("experiment_data", jsPsych.data.get().csv());
-              jsPsych.data.displayData();
-            }
-         });
+           timeline:timeline,
+         on_finish: saveData
+          });
+
 
 
     </script>
