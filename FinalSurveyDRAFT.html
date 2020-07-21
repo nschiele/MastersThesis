@@ -200,23 +200,65 @@
         var test_procedures = [];
 
         //SP = Shortest Path
+        var SP_highlight = [
+          ['C-Q'],
+          ['B-K'],
+          ['G-A'],
+          ['AF-Q'],
+          ['Z-R'],
+          ['H-V'],
+        ]
+
         var SP_stimuli = [
-          {stimulus: {file:file_list[0], type:TYPE, highlight:['C-', '-Q']}},
-          {stimulus: {file:file_list[1], type:TYPE, highlight:['C-', '-K']}},
-          {stimulus: {file:file_list[2], type:TYPE, highlight:['K-', '-A']}},
-          {stimulus: {file:file_list[3], type:TYPE, highlight:['AT-', '-Q']}},
-          {stimulus: {file:file_list[4], type:TYPE, highlight:['Z-', '-F']}},
-          {stimulus: {file:file_list[5], type:TYPE, highlight:['A-', '-B']}}
+          {stimulus: {file:file_list[0], type:TYPE, highlight:SP_highlight[0]},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[0][0].split("-")[0] + " to node " + SP_highlight[0][0].split("-")[1] + "?</p></div>"},
+          {stimulus: {file:file_list[1], type:TYPE, highlight:SP_highlight[1]},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[1][0].split("-")[0] + " to node " + SP_highlight[1][0].split("-")[1] + "?</p></div>"},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:SP_highlight[2]},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[2][0].split("-")[0] + " to node " + SP_highlight[2][0].split("-")[1] + "?</p></div>"},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:SP_highlight[3]},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[3][0].split("-")[0] + " to node " + SP_highlight[3][0].split("-")[1] + "?</p></div>"},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:SP_highlight[4]},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[4][0].split("-")[0] + " to node " + SP_highlight[4][0].split("-")[1] + "?</p></div>"},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:SP_highlight[5]},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[5][0].split("-")[0] + " to node " + SP_highlight[5][0].split("-")[1] + "?</p></div>"}
            ]
 
         var SP_test = {
           type: "json-graph-question-response",
           stimulus: jsPsych.timelineVariable('stimulus'),
-          prompt: "<div style='width: 800px'><p>How many edges are in the shortest path between the two highlighted nodes?</p>"+
-          "<p></p><p><i>Select 0 if there is no path between the two highlighted nodes</i></p></div>",
+          prompt: jsPsych.timelineVariable('prompt'),
           stimulus_width: stimu_w,
           stimulus_height: stimu_h
         }
+
+        var SP_example = "";
+        switch(TYPE){
+          case 1:
+            SP_example = "";
+            break;
+          case 2:
+            SP_example = "Nodelink";
+            break;
+          case 3:
+            SP_example = "";
+            break;
+          }
+
+        var SP_intro = {
+          type: "html-keyboard-response",
+          stimulus: "<div style='width: 800px;'><p style='text-align: left'>"+
+          "The following task is to find the shortest path between two specified nodes. "+
+          "This direction will be specified. "+
+          "Your instructions are to find the shortest path between the nodes, and then count the number of edges in that path. "+
+          "There may not always be a possible shortest path, in this case please enter 0. "+
+          "An example problem is provided below: </p>"+
+          SP_example+
+          "<br></br><br></br><p>"+
+          "This task will start after you press any key."+
+          "</p></div>"
+        };
+
 
 
         var SP_test_procedure = {
@@ -225,24 +267,68 @@
           timeline_variables: SP_stimuli
         }
 
-        test_procedures.push(SP_test_procedure);
+        var SP_grand_procedure = {
+          timeline: [SP_intro, SP_test_procedure]
+        }
+
+
 
 
         //IL = Incoming Links
+        var IL_highlight = [
+          ['F-F'],
+          ['F-F'],
+          ['F-F'],
+          ['F-F'],
+          ['F-F'],
+          ['F-F'],
+        ]
+
+
         var IL_stimuli = [
-          {stimulus: {file:file_list[0], type:TYPE, highlight:['F-F']}},
-          {stimulus: {file:file_list[1], type:TYPE, highlight:['F-F']}},
-          {stimulus: {file:file_list[2], type:TYPE, highlight:['F-F']}},
-          {stimulus: {file:file_list[3], type:TYPE, highlight:['F-F']}},
-          {stimulus: {file:file_list[4], type:TYPE, highlight:['F-F']}},
-          {stimulus: {file:file_list[5], type:TYPE, highlight:['F-F']}}
+          {stimulus: {file:file_list[0], type:TYPE, highlight:IL_highlight[0]},
+           prompt: "<div style='width: 800px'><p>How many incoming edges does node " + IL_highlight[0][0].split("-")[0] + " have?</p></div>"},
+          {stimulus: {file:file_list[1], type:TYPE, highlight:IL_highlight[1]},
+           prompt: "<div style='width: 800px'><p>How many incoming edges does node "+IL_highlight[1][0].split("-")[0]+" have?</p></div>"},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:IL_highlight[2]},
+           prompt: "<div style='width: 800px'><p>How many incoming edges does node "+IL_highlight[2][0].split("-")[0]+" have?</p></div>"},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:IL_highlight[3]},
+           prompt: "<div style='width: 800px'><p>How many incoming edges does node "+IL_highlight[3][0].split("-")[0]+" have?</p></div>"},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:IL_highlight[4]},
+           prompt: "<div style='width: 800px'><p>How many incoming edges does node "+IL_highlight[4][0].split("-")[0]+" have?</p></div>"},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:IL_highlight[5]},
+           prompt: "<div style='width: 800px'><p>How many incoming edges does node "+IL_highlight[5][0].split("-")[0]+" have?</p></div>"}
            ]
+
+       var IL_example = "";
+       switch(TYPE){
+         case 1:
+           IL_example = "";
+           break;
+         case 2:
+           IL_example = "Nodelink";
+           break;
+         case 3:
+           IL_example = "";
+           break;
+         }
+
+       var IL_intro = {
+         type: "html-keyboard-response",
+         stimulus: "<div style='width: 800px;'><p style='text-align: left'>"+
+         "The following task is to find the number of incoming edges into a specified nodes. "+
+         "The node will be specified, and you must find the number of edges coming from other nodes to the specified nodes. " +
+         "An example problem is provided below: <p><>"+
+         IL_example+
+         "<br></br><br></br><p>"+
+         "This task will start after you press any key."+
+         "</p></div>"
+       };
 
         var IL_test = {
           type: "json-graph-question-response",
           stimulus: jsPsych.timelineVariable('stimulus'),
-          prompt: "<div style='width: 800px'><p>How many incoming edges does the highlighted node have?</p>"+
-          "</div>",
+          prompt: jsPsych.timelineVariable('prompt'),
           stimulus_width: stimu_w,
           stimulus_height: stimu_h
         }
@@ -254,13 +340,15 @@
           timeline_variables: IL_stimuli
         }
 
-        test_procedures.push(IL_test_procedure);
+        var IL_grand_procedure = {
+          timeline: [IL_intro, IL_test_procedure]
+        }
+
+
 
 
 
         //CN = Common Neighbors
-
-
         var CN_stimuli = [
           {stimulus: {file:file_list[0], type:TYPE, highlight:['F-F', 'B-B']},
           prompt: "<div style='width: 800px'><p>How many common neighbors are between F and B?</p></div>"},
@@ -291,7 +379,7 @@
           timeline_variables: CN_stimuli
         }
 
-        test_procedures.push(CN_test_procedure);
+
 
 
         //SG = Same Group
@@ -322,7 +410,10 @@
           timeline_variables: SG_stimuli
         }
 
-        test_procedures.push(SG_test_procedure);
+        test_procedures.push(SP_grand_procedure);
+        //test_procedures.push(IL_test_procedure);
+        //test_procedures.push(CN_test_procedure);
+        //test_procedures.push(SG_test_procedure);
 
 
 
