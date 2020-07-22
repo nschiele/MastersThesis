@@ -10,6 +10,8 @@
         <script src="jspsych-6.1.0/plugins/jspsych-json-graph-slider-response.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-json-graph-question-response.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-survey-likert.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-external-html.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-image-slider-response.js"></script>
@@ -42,7 +44,7 @@
         const stimu_h = 700;
         const stimu_w = 700;
 
-        const TYPE = 2//Math.floor(Math.random() * 3) + 1;
+        const TYPE = Math.floor(Math.random() * 3) + 1;
 
       /* create timeline */
          var timeline = [];
@@ -77,6 +79,31 @@
          timeline.push(consent);
 
 
+         var userID = "";
+         //Mturk id collection
+         var id_collection = {
+          type: 'survey-text',
+          questions: [
+            {prompt: "What is your mTurk ID?", required: true},
+          ],
+          on_finish:function(data){
+            userID = data.responses.split('"')[3];
+            //console.log(userID);
+          }
+
+        };
+        timeline.push(id_collection);
+
+        var demographics = {
+          type: 'survey-multi-choice',
+          questions: [
+            {prompt: "<b>How old are you?</b>", options: ["18 - 25", "26 - 30", "31 - 40", "41 - 50", "50+"], name:"Age", required: false, horizontal: false},
+            {prompt: "<b>What is your gender?</b>", options: ["Male", "Female", "Other"], name:"Sex", required: false, horizontal: false},
+            {prompt: "<b>What is the highest level of education you have completed?</b>", options: ["High School Diploma or Equivalent", "Some College", "Associates Degree", "Bachelors", "Masters", "Ph.D. or other doctoral degree"], name:"Education", required: false, horizontal: false}
+          ],
+        };
+        timeline.push(demographics);
+
 
 
 //style for internal div
@@ -87,13 +114,35 @@
                       " and how the information is expressed.</p>" +
                       "<p>Press Continue to go to the next slide.</p>";
 
-        var nl_instructions =
+        var nl_instructions_1 =
         "<h2>Node Link Visualization</h2>"+
         "<p></p><p></p>"+
         "<p style='width: 700px;'>This is a node link visualization. Each node is representated as a circle. "+
         "The connections between nodes are visualized as a arrow."+
         "<div style='width: 700px;'>"+
         "<div><img src='img/nl_ex.png'></img>"+
+        "</div>";
+
+        var nl_instructions_2 =
+        "<h2>Adjacency Matrix Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>Here we see a single highlighted node, in this case, it is the node labeled 'B'. "+
+        "We can see there is a single outgoing edge from node B. "+
+        "We can also see that there are three incoming edges from other nodes to node B. "+
+        "</p>"+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/NL_IL_example.png'></img>"+
+        "</div>";
+
+        var nl_instructions_3 =
+        "<h2>Adjacency Matrix Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>Each node is only represented once. "+
+        "We can see that there is a single edge from node J to node B. We can also see that there are no edges from node B to node J.<br/> "+
+        ""+
+        "</p>"+
+        "<div style='width: 700px;'>"+
+        "<img src='img/NL_CN_example.png'></img>"+
         "</div>";
 
         var am_instructions_1 =
@@ -112,27 +161,40 @@
         var am_instructions_2 =
         "<h2>Adjacency Matrix Visualization</h2>"+
         "<p></p><p></p>"+
-        "<p style='width: 700px;'>Here we see a single highlighted node, in this case, the \"second\" node of this network."+
-        "The filled in boxes in the row correspond with outgoing edges. So we see that there is a single outgoing edge from the \"second\" node to the \"first\" node "+
-        "</p><p style='width: 700px;'>The filled in boxes in the column correspond with incoming edges. "+
-        "So we can see that the highlighted node has 3 incomming edges. "+
+        "<p style='width: 700px;'>Here we see a single highlighted node, in this case, it is the node labeled 'B'. "+
+        "The filled in boxes in the <b>row</b> correspond with outgoing edges. So we see that there is a single outgoing edge from node B to the \"first\" node "+
+        "</p><p style='width: 700px;'>The filled in boxes in the <b>column</b> correspond with incoming edges. "+
+        "So we can see that node B has 3 incomming edges. "+
         "and the column of a filled in box corresponds with the target of the connection"+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/am_ex_hl.png'></img>"+
+        "<div><img src='img/AM_IL_example.png'></img>"+
         "</div>";
 
         var am_instructions_3 =
         "<h2>Adjacency Matrix Visualization</h2>"+
         "<p></p><p></p>"+
         "<p style='width: 700px;'>Each filled in box represents a single edge. "+
-        "The edge pointed to in the visualization below represents an edge from the 9th node (as it is in the 9th row)<br/> "+
-        "to the 10th node (as it is in the 10th column) "+
+        "We can see that there is a single edge from node J to node B. We can also see that there are no edges from node B to node J.<br/> "+
+        ""+
         "</p>"+
         "<div style='width: 700px;'>"+
-        "<img src='img/am_ex_ed.png'></img>"+
+        "<img src='img/AM_CN_example.png'></img>"+
         "</div>";
 
-        var bp_instructions =
+        var am_instructions_4 =
+        "<h2>Adjacency Matrix Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>These two networks present the same information. "+
+        "Please take a moment to convince yourself that these networks are the same. The same two nodes B and J are highlighted on both networks.<br/> "+
+        ""+
+        "</p>"+
+        "<div style='width: 800px;'>"+
+        "<div style='float: left;'><img style='width: 400px;' src='img/AM_CN_example.png'></img>" +
+        "<p class='small'><strong></strong></p></div>" +
+        "<div class='float: right;'><img style='width: 400px;' src='img/NL_CN_example.png'></img>" +
+        "<p class='small'><strong></strong></p></div></div>";
+
+        var bp_instructions_1 =
         "<h2>Bipartite Visualization</h2>"+
         "<p></p><p></p>"+
         "<p style='width: 700px;'>This is an bipartite visualization. Each node is represented twice on a vertical list of nodes. "+
@@ -144,24 +206,73 @@
         "<div><img src='img/bp_ex.png'></img>"+
         "</div>";
 
+        var bp_instructions_2 =
+        "<h2>Bipartite Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>Here we see a single highlighted node, in this case, it is the node labeled 'B'. "+
+        "The nodes the <b>left</b> correspond with outgoing edges. So we see that there is a single outgoing edge from node B to the \"first\" node "+
+        "</p><p style='width: 700px;'>The nodes on the <b>right</b> correspond with incoming edges. "+
+        "So we can see that node B has 3 incomming edges. "+
+        ""+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/BP_IL_example.png'></img>"+
+        "</div>";
+
+        var bp_instructions_3 =
+        "<h2>Bipartite Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>Each node is represented twice, once as an \"outgoing\" node, on the left side, and once as an \"incoming\" node on the right side. "+
+        "We can see that there is a single edge from node J to node B. We can also see that there are no edges from node B to node J.<br/> "+
+        ""+
+        "</p>"+
+        "<div style='width: 700px;'>"+
+        "<img src='img/BP_CN_example.png'></img>"+
+        "</div>";
+
+        var bp_instructions_4 =
+        "<h2>Bipartite Visualization</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>These two networks present the same information. "+
+        "Please take a moment to convince yourself that these networks are the same. The same two nodes B and J are highlighted on both networks.<br/> "+
+        ""+
+        "</p>"+
+        "<div style='width: 800px;'>"+
+        "<div style='float: left;'><img style='width: 400px;' src='img/BP_CN_example.png'></img>" +
+        "<p class='small'><strong></strong></p></div>" +
+        "<div class='float: right;'><img style='width: 400px;' src='img/NL_CN_example.png'></img>" +
+        "<p class='small'><strong></strong></p></div></div>";
+
+        var instructions_end = "<h2>End of Instructions</h2>" +
+        "<p></p><p></p>"+
+        "<p style='width: 700px;'>This is the end of the instructions. "+
+        "You will not be able to return to the instructions after pressing \"Next\". "+
+        "Please ensure you have a basic understanding of the visualization presented to you. </p>";
+
 
         ins_pages = [intro];
 
 
         switch(TYPE){
-          case 1:
-            ins_pages.push(bp_instructions);
+          case BIPARTITE:
+            ins_pages.push(bp_instructions_1);
+            ins_pages.push(bp_instructions_2);
+            ins_pages.push(bp_instructions_3);
+            ins_pages.push(bp_instructions_4);
             break;
-          case 2:
-            ins_pages.push(nl_instructions);
+          case NODELINK:
+            ins_pages.push(nl_instructions_1);
+            ins_pages.push(nl_instructions_2);
+            ins_pages.push(nl_instructions_1);
             break;
-          case 3:
+          case ADJACENCY:
             ins_pages.push(am_instructions_1);
             ins_pages.push(am_instructions_2);
             ins_pages.push(am_instructions_3);
+            ins_pages.push(am_instructions_4);
             break;
           }
 
+        ins_pages.push(instructions_end);
 
         console.log(ins_pages);
 
@@ -194,12 +305,41 @@
          type: 'survey-likert',
          questions: [
            {prompt: "How difficult was the previous question?", labels: scale, required: true}
-         ]
-          };
+         ],
+         on_finish:function(data){
+           data.user = userID
+         }
+        };
+
+        var fixation = {
+          type: 'html-keyboard-response',
+          stimulus: '<div style="font-size:60px;"></div>',
+          choices: jsPsych.NO_KEYS,
+          trial_duration: 500,
+        }
 
         var test_procedures = [];
 
-        //SP = Shortest Path
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ---------------------------------------
+        //    SP
+        //
+        //    Shortest Path
+        // ---------------------------------------
         var SP_highlight = [
           ['C-Q'],
           ['B-K'],
@@ -229,40 +369,64 @@
           stimulus: jsPsych.timelineVariable('stimulus'),
           prompt: jsPsych.timelineVariable('prompt'),
           stimulus_width: stimu_w,
-          stimulus_height: stimu_h
+          stimulus_height: stimu_h,
+          on_finish:function(data){
+            data.user = userID;
+            data.task = "SP";
+            data.type = TYPE;
+            data.nodes = parseInt(this.stimulus["file"].split("_")[1]);
+            data.density = parseInt(this.stimulus["file"].split("_")[2]);
+            data.hl = this.stimulus["highlight"].toString();
+          }
         }
 
         var SP_example = "";
         switch(TYPE){
-          case 1:
-            SP_example = "";
+          case BIPARTITE:
+            SP_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+            "<p> </p><img src='img/BP_SP_example.png'></img>"+
+            "<p>How many edges are in the shortest path from node G to node B?</p>"+
+            "</div>"+
+            "<p> </p><p style='width: 600px; margin: auto;'><i></i><p>";
             break;
-          case 2:
-            SP_example = "Nodelink";
+          case NODELINK:
+            SP_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+            "<p> </p><img src='img/NL_SP_example.png'></img>"+
+            "<p>How many edges are in the shortest path from node G to node B?</p>"+
+            "</div>"+
+            "<p> </p><p style='width: 600px; margin: auto;'><i></i><p>";
             break;
-          case 3:
-            SP_example = "";
+          case ADJACENCY:
+            SP_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+            "<p> </p><img src='img/AM_SP_example.png'></img>"+
+            "<p>How many edges are in the shortest path from node G to node B?</p>"+
+            "</div>"+
+            "<p> </p><p style='width: 600px; margin: auto;'><i></i><p>";
             break;
           }
 
         var SP_intro = {
           type: "html-keyboard-response",
-          stimulus: "<div style='width: 800px;'><p style='text-align: left'>"+
+          stimulus: "<div style='width: 1000px;'>"+
+          "<b> Instructions for Shortest Path Task </b><br></br>"+
+          "<p style='text-align: left'>"+
           "The following task is to find the shortest path between two specified nodes. "+
           "This direction will be specified. "+
           "Your instructions are to find the shortest path between the nodes, and then count the number of edges in that path. "+
           "There may not always be a possible shortest path, in this case please enter 0. "+
           "An example problem is provided below: </p>"+
           SP_example+
-          "<br></br><br></br><p>"+
+          "<p>"+
           "This task will start after you press any key."+
           "</p></div>"
         };
 
 
 
+
+
         var SP_test_procedure = {
-          timeline: [SP_test, likert_page],
+          timeline: [fixation, SP_test, likert_page],
           randomize_order: true,
           timeline_variables: SP_stimuli
         }
@@ -274,7 +438,28 @@
 
 
 
-        //IL = Incoming Links
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ---------------------------------------
+        //    IL
+        //
+        //    Incoming Links
+        // ---------------------------------------
         var IL_highlight = [
           ['F-F'],
           ['F-F'],
@@ -302,25 +487,39 @@
 
        var IL_example = "";
        switch(TYPE){
-         case 1:
-           IL_example = "";
+         case BIPARTITE:
+           IL_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+           "<p> </p><img src='img/BP_IL_example.png'></img>"+
+           "<p>How many incoming edges does node B have?</p>"+
+           "</div>"+
+           "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the right column of a bipartite visualization representes the incoming edges of a node</i><p>";
            break;
-         case 2:
-           IL_example = "Nodelink";
+         case NODELINK:
+           IL_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+           "<p> </p><img src='img/NL_IL_example.png'></img>"+
+           "<p>How many incoming edges does node B have?</p>"+
+           "</div>"+
+           "<p> </p><p style='width: 600px; margin: auto;'>We will only be asking about incoming edges<p>";
            break;
-         case 3:
-           IL_example = "";
+         case ADJACENCY:
+           IL_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+           "<p> </p><img src='img/AM_IL_example.png'></img>"+
+           "<p>How many incoming edges does node B have?</p>"+
+           "</div>"+
+           "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the filled in squares of a column of a matrix visualization representes the incoming edges of a node</i><p>";
            break;
          }
 
        var IL_intro = {
          type: "html-keyboard-response",
-         stimulus: "<div style='width: 800px;'><p style='text-align: left'>"+
+         stimulus: "<div style='width: 1000px;'>"+
+         "<b> Instructions for Incoming Edges Task </b><br></br>"+
+         "<p style='text-align: left'>"+
          "The following task is to find the number of incoming edges into a specified nodes. "+
          "The node will be specified, and you must find the number of edges coming from other nodes to the specified nodes. " +
-         "An example problem is provided below: <p><>"+
+         "An example problem is provided below: <p>"+
          IL_example+
-         "<br></br><br></br><p>"+
+         "<p>"+
          "This task will start after you press any key."+
          "</p></div>"
        };
@@ -335,7 +534,7 @@
 
 
         var IL_test_procedure = {
-          timeline: [IL_test, likert_page],
+          timeline: [fixation, IL_test, likert_page],
           randomize_order: true,
           timeline_variables: IL_stimuli
         }
@@ -348,21 +547,97 @@
 
 
 
-        //CN = Common Neighbors
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ---------------------------------------
+        //    CN
+        //
+        //    Common Neighbors
+        // ---------------------------------------
+        var CN_highlight = [
+          ['F-F', 'B-B'],
+          ['A-A', 'N-N'],
+          ['G-G', 'B-B'],
+          ['F-F', 'E-E'],
+          ['F-F', 'Q-Q'],
+          ['R-R', 'Z-Z'],
+        ]
+
         var CN_stimuli = [
-          {stimulus: {file:file_list[0], type:TYPE, highlight:['F-F', 'B-B']},
-          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and B?</p></div>"},
-          {stimulus: {file:file_list[1], type:TYPE, highlight:['F-F', 'B-B']},
-          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and B?</p></div>"},
-          {stimulus: {file:file_list[2], type:TYPE, highlight:['F-F', 'B-B']},
-          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and B?</p></div>"},
-          {stimulus: {file:file_list[3], type:TYPE, highlight:['F-F', 'BB-BB']},
-          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and BB?</p></div>"},
-          {stimulus: {file:file_list[4], type:TYPE, highlight:['F-F', 'BB-BB']},
-          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and BB?</p></div>"},
-          {stimulus: {file:file_list[5], type:TYPE, highlight:['F-F', 'BB-BB']},
-          prompt: "<div style='width: 800px'><p>How many common neighbors are between F and BB?</p></div>"}
+          {stimulus: {file:file_list[0], type:TYPE, highlight:CN_highlight[0]},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between "+CN_highlight[0][0].split("-")[0]+" and "+CN_highlight[0][1].split("-")[0]+"?</p></div>"},
+          {stimulus: {file:file_list[1], type:TYPE, highlight:CN_highlight[1]},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between "+CN_highlight[1][0].split("-")[0]+" and "+CN_highlight[1][1].split("-")[0]+"?</p></div>"},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:CN_highlight[2]},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between "+CN_highlight[2][0].split("-")[0]+" and "+CN_highlight[2][1].split("-")[0]+"?</p></div>"},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:CN_highlight[3]},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between "+CN_highlight[3][0].split("-")[0]+" and "+CN_highlight[3][1].split("-")[0]+"?</p></div>"},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:CN_highlight[4]},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between "+CN_highlight[4][0].split("-")[0]+" and "+CN_highlight[4][1].split("-")[0]+"?</p></div>"},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:CN_highlight[5]},
+          prompt: "<div style='width: 800px'><p>How many common neighbors are between "+CN_highlight[5][0].split("-")[0]+" and "+CN_highlight[5][1].split("-")[0]+"?</p></div>"},
            ]
+
+
+       var CN_example = "";
+       switch(TYPE){
+         case BIPARTITE:
+           CN_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+           "<p> </p><img src='img/BP_SG_example.png'></img>"+
+           "<p>How many common neighbors are between B and F?</p>"+
+           "</div>"+
+           "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the right column of a bipartite visualization representes the incoming edges of a node, and the left column represents the outgoing edges of a node.</i><p>";
+           break;
+         case NODELINK:
+           CN_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+           "<p> </p><img src='img/NL_SG_example.png'></img>"+
+           "<p>How many common neighbors are between B and F?</p>"+
+           "</div>"+
+           "<p> </p><p style='width: 600px; margin: auto;'><p>";
+           break;
+         case ADJACENCY:
+           CN_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+           "<p> </p><img src='img/AM_SG_example.png'></img>"+
+           "<p>How many common neighbors are between B and F?</p>"+
+           "</div>"+
+           "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the filled in squares of a column of a matrix visualization representes the incoming edges of a node, and the filled in squares of a row of a matrix visualization represents the outgoing edges of a node.</i><p>";
+           break;
+         }
+
+       var CN_intro = {
+         type: "html-keyboard-response",
+         stimulus: "<div style='width: 1000px;'>"+
+         "<b> Instructions for Common Neighbors Task </b><br></br>"+
+         "<p style='text-align: left'>"+
+         "The following task is to find the number of common neighbors between two specified nodes. "+
+         'A node is a "Common Neighbor" if there are edges from another node to both specified nodes OR there are edges from both specified nodes to another node. ' +
+         "An example problem is provided below: <p>"+
+         CN_example+
+         "<p>"+
+         "This task will start after you press any key."+
+         "</p></div>"
+       };
 
         var CN_test = {
           type: "json-graph-question-response",
@@ -374,30 +649,103 @@
 
 
         var CN_test_procedure = {
-          timeline: [CN_test, likert_page],
+          timeline: [fixation, CN_test, likert_page],
           randomize_order: true,
           timeline_variables: CN_stimuli
+        }
+
+        var CN_grand_procedure = {
+          timeline: [CN_intro, CN_test_procedure]
         }
 
 
 
 
-        //SG = Same Group
+
+
+
+
+
+
+
+
+
+
+        // ---------------------------------------
+        //    SG
+        //
+        //    Same Group
+        // ---------------------------------------
+
+        var SG_highlight = [
+          ['F-F', 'B-B'],
+          ['A-A', 'N-N'],
+          ['G-G', 'B-B'],
+          ['F-F', 'E-E'],
+          ['F-F', 'Q-Q'],
+          ['R-R', 'Z-Z'],
+        ]
 
         var SG_stimuli = [
-          {stimulus: {file:file_list[0], type:TYPE, highlight:['F-F', 'B-B']}},
-          {stimulus: {file:file_list[1], type:TYPE, highlight:['F-F', 'B-B']}},
-          {stimulus: {file:file_list[2], type:TYPE, highlight:['F-F', 'B-B']}},
-          {stimulus: {file:file_list[3], type:TYPE, highlight:['F-F', 'BB-BB']}},
-          {stimulus: {file:file_list[4], type:TYPE, highlight:['F-F', 'BB-BB']}},
-          {stimulus: {file:file_list[5], type:TYPE, highlight:['F-F', 'BB-BB']}}
+          {stimulus: {file:file_list[0], type:TYPE, highlight:SG_highlight[0]},
+          prompt: "<div style='width: 800px'><p>Are node "+SG_highlight[0][0].split("-")[0]+" and node "+SG_highlight[0][1].split("-")[0]+" in the same group?</p></div>"},
+          {stimulus: {file:file_list[1], type:TYPE, highlight:SG_highlight[1]},
+          prompt: "<div style='width: 800px'><p>Are node "+SG_highlight[1][0].split("-")[0]+" and node "+SG_highlight[1][1].split("-")[0]+" in the same group?</p></div>"},
+          {stimulus: {file:file_list[2], type:TYPE, highlight:SG_highlight[2]},
+          prompt: "<div style='width: 800px'><p>Are node "+SG_highlight[2][0].split("-")[0]+" and node "+SG_highlight[2][1].split("-")[0]+" in the same group?</p></div>"},
+          {stimulus: {file:file_list[3], type:TYPE, highlight:SG_highlight[3]},
+          prompt: "<div style='width: 800px'><p>Are node "+SG_highlight[3][0].split("-")[0]+" and node "+SG_highlight[3][1].split("-")[0]+" in the same group?</p></div>"},
+          {stimulus: {file:file_list[4], type:TYPE, highlight:SG_highlight[4]},
+          prompt: "<div style='width: 800px'><p>Are node "+SG_highlight[4][0].split("-")[0]+" and node "+SG_highlight[4][1].split("-")[0]+" in the same group?</p></div>"},
+          {stimulus: {file:file_list[5], type:TYPE, highlight:SG_highlight[5]},
+          prompt: "<div style='width: 800px'><p>Are node "+SG_highlight[5][0].split("-")[0]+" and node "+SG_highlight[5][1].split("-")[0]+" in the same group?</p></div>"},
            ]
+
+           var SG_example = "";
+           switch(TYPE){
+             case BIPARTITE:
+               SG_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+               "<p> </p><img src='img/BP_SG_example.png'></img>"+
+               "<p>Are node B and node F in the same group?</p>"+
+               "</div>"+
+               "<p> </p><p style='width: 600px; margin: auto;'><i> </i><p>";
+               break;
+             case NODELINK:
+               SG_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+               "<p> </p><img src='img/NL_SG_example.png'></img>"+
+               "<p>Are node B and node F in the same group?</p>"+
+               "</div>"+
+               "<p> </p><p style='width: 600px; margin: auto;'><p>";
+               break;
+             case ADJACENCY:
+               SG_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
+               "<p> </p><img src='img/AM_SG_example.png'></img>"+
+               "<p>Are node B and node F in the same group?</p>"+
+               "</div>"+
+               "<p> </p><p style='width: 600px; margin: auto;'><i> </i><p>";
+               break;
+             }
+
+           var SG_intro = {
+             type: "html-keyboard-response",
+             stimulus: "<div style='width: 1000px;'>"+
+             "<b> Instructions for Same Group Task </b><br></br>"+
+             "<p style='text-align: left'>"+
+             "The following task is to decide if the two specified nodes are in the same group"+
+             "A 'group' is a smaller collection of nodes that have a lot of connections between them. You have to decide if the two specified nodes are in the same group. Use your best judgement. " +
+             "An example problem is provided below: <p>"+
+             SG_example+
+             "<p>"+
+             "This task will start after you press any key."+
+             "</p></div>"
+           };
+
+
 
         var SG_test = {
           type: "json-graph-button-response",
           stimulus: jsPsych.timelineVariable('stimulus'),
-          prompt: "<div style='width: 800px'><p>Are the two highlighted nodes a part of the same group?</p>"+
-          "</div>",
+          prompt: jsPsych.timelineVariable('prompt'),
           choices: ['Yes', 'No'],
           stimulus_width: stimu_w,
           stimulus_height: stimu_h
@@ -405,15 +753,38 @@
 
 
         var SG_test_procedure = {
-          timeline: [SG_test, likert_page],
+          timeline: [fixation, SG_test, likert_page],
           randomize_order: true,
           timeline_variables: SG_stimuli
         }
 
+        var SG_grand_procedure = {
+          timeline: [SG_intro, SG_test_procedure]
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // -------------------------
+        //    Final Test Assembly
+
+
         test_procedures.push(SP_grand_procedure);
-        //test_procedures.push(IL_test_procedure);
-        //test_procedures.push(CN_test_procedure);
-        //test_procedures.push(SG_test_procedure);
+        test_procedures.push(IL_grand_procedure);
+        test_procedures.push(CN_grand_procedure);
+        test_procedures.push(SG_grand_procedure);
 
 
 
@@ -421,28 +792,43 @@
         //Adding the tests to the timeline in random order
         test_procedures = jsPsych.randomization.repeat(test_procedures, 1);
         timeline.push(test_procedures[0]);
-        // timeline.push(test_procedures[1]);
-        // timeline.push(test_procedures[2]);
-        // timeline.push(test_procedures[3]);
+        timeline.push(test_procedures[1]);
+        timeline.push(test_procedures[2]);
+        timeline.push(test_procedures[3]);
 
 
 
-
-
-        function saveData(name, data){
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', 'write_data2.php'); // 'write_data.php' is the path to the php file described above.
-          xhr.setRequestHeader('Content-Type', 'application/json');
-          xhr.send(JSON.stringify({filename: name, filedata: data}));
-        }
-
-        // call the saveData function after the experiment is over
         jsPsych.init({
-            timeline:timeline,
-           // code to define the experiment structure would go here...
-           on_finish: function(){ saveData("experiment_data", jsPsych.data.get().csv()); }
+          timeline: timeline,
+          on_finish: function() {
+             jsPsych.data.displayData();
+           }
         });
 
+
+
+        // jsPsych.init({
+        //   timeline: timeline,
+    	  // on_finish: function() {
+        //         //jsPsych.data.displayData();
+        //
+    		// 	on_finish: {
+    		// 	  var xhr = new XMLHttpRequest();
+    		// 	  xhr.open('POST', 'write_data.php'); // change 'write_data.php' to point to php script.
+    		// 	  xhr.setRequestHeader('Content-Type', 'application/json');
+    		// 	  xhr.onload = function() {
+    		// 		if(xhr.status == 200){
+    		// 			console.log(xhr.responseText);
+    		// 		  var response = JSON.parse(JSON.stringify(xhr.responseText));
+    		// 		  console.log(response.success);
+    		// 		}
+    		// 	  };
+        //     console.log(jsPsych.data.get().json());
+    		// 	  xhr.send(jsPsych.data.get().json());
+        //
+    		// 	}
+        //     }
+        // });
 
 
     </script>
