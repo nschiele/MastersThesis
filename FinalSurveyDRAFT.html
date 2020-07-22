@@ -529,7 +529,15 @@
           stimulus: jsPsych.timelineVariable('stimulus'),
           prompt: jsPsych.timelineVariable('prompt'),
           stimulus_width: stimu_w,
-          stimulus_height: stimu_h
+          stimulus_height: stimu_h,
+          on_finish:function(data){
+            data.user = userID;
+            data.task = "IL";
+            data.type = TYPE;
+            data.nodes = parseInt(this.stimulus["file"].split("_")[1]);
+            data.density = parseInt(this.stimulus["file"].split("_")[2]);
+            data.hl = this.stimulus["highlight"].toString();
+          }
         }
 
 
@@ -644,7 +652,15 @@
           stimulus: jsPsych.timelineVariable('stimulus'),
           prompt: jsPsych.timelineVariable('prompt'),
           stimulus_width: stimu_w,
-          stimulus_height: stimu_h
+          stimulus_height: stimu_h,
+          on_finish:function(data){
+            data.user = userID;
+            data.task = "CN";
+            data.type = TYPE;
+            data.nodes = parseInt(this.stimulus["file"].split("_")[1]);
+            data.density = parseInt(this.stimulus["file"].split("_")[2]);
+            data.hl = this.stimulus["highlight"].toString();
+          }
         }
 
 
@@ -748,7 +764,15 @@
           prompt: jsPsych.timelineVariable('prompt'),
           choices: ['Yes', 'No'],
           stimulus_width: stimu_w,
-          stimulus_height: stimu_h
+          stimulus_height: stimu_h,
+          on_finish:function(data){
+            data.user = userID;
+            data.task = "SG";
+            data.type = TYPE;
+            data.nodes = parseInt(this.stimulus["file"].split("_")[1]);
+            data.density = parseInt(this.stimulus["file"].split("_")[2]);
+            data.hl = this.stimulus["highlight"].toString();
+          }
         }
 
 
