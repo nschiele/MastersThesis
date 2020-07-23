@@ -136,7 +136,7 @@ jsPsych.plugins['json-graph-question-response'] = (function() {
       html += trial.prompt;
     }
     html += '<form id="jspsych-graph-question">'
-    html += '<input type="number" class="jspsych-survey-number-question" id="#lname" name="lname" required><p></p>';
+    html += '<input type="number" class="jspsych-survey-number-question" id="#lname" name="lname" min="0" required><p></p>';
     // add submit button
     //html += '<button id="jspsych-json-graph-question-response-next" class="jspsych-btn">'+trial.button_label+'</button>';
     html += '<input type="submit" id="jspsych-json-graph-question-response-next" class="jspsych-btn jspsych-survey-text" value="'+trial.button_label+'"></input>'
