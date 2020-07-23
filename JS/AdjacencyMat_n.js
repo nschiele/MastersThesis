@@ -87,7 +87,11 @@
 				.append("rect")
 				.attr("class","grid")
 				.attr("width",width)
-				.attr("height",height)
+				.attr("height",function(d){
+          //console.log(d);
+          //return d.y == 0 ? height : height ;
+          return height;
+        })
 				.attr("x", d=> d.x*width)
 				.attr("y", d=> d.y*height)
 				.style("fill-opacity", function(d){
@@ -127,10 +131,10 @@
 
 
 
-      // Select a node specifically - TEXT VERSION
+      // Select a node specifically - label all, color hightlight
       d3.select("svg")
           .append("g")
-          .attr("transform","translate(50,45)")
+          .attr("transform","translate(50,48)")
           .selectAll("text")
           .data(nodes)
           .enter()
@@ -138,36 +142,46 @@
           .attr("x", (d,i) => i * width + width/2)
           .text(d => d.id)
           .style("text-anchor","middle")
-          .style("font-size", function(d){
-            console.log(d);
+          .style("fill", function(d){
+            //console.log(d);
             for(var h = 0; h < highlights.length; h++){
               var hp = highlights[h].split("-");
               if(d.id.localeCompare(hp[1]) === 0){
-                return nodes.length == 20 ? "20px" : "12px";
+                return "red";
               }
             }
-            return "0px";
+            return "black";
+          })
+          .style("font-size", nodes.length == 20 ? "20px" : function(d){
+            for(var h = 0; h < highlights.length; h++){
+                     var hp = highlights[h].split("-");
+                     if(d.id.localeCompare(hp[1]) === 0){
+                       return "10px"
+                     }
+                   }
+            return d.id.length > 1 ? "8px" : "9px";
           })
 
+
           d3.select("svg")
-    			    .append("g").attr("transform","translate(45,50)")
+    			    .append("g").attr("transform","translate(35,50)")
     			    .selectAll("text")
     			    .data(nodes)
     			    .enter()
     			    .append("text")
     			    .attr("y",(d,i) => i * height + height/1.3)
     			    .text(d => d.id)
-    			    .style("text-anchor","end")
-              .style("font-size", function(d){
-                console.log(d);
+              .style("fill", function(d){
+                //console.log(d);
                 for(var h = 0; h < highlights.length; h++){
                   var hp = highlights[h].split("-");
                   if(d.id.localeCompare(hp[0]) === 0){
-                    return nodes.length == 20 ? "20px" : "12px";
+                    return "red";
                   }
                 }
-                return "0px";
+                return "black";
               })
+              .style("font-size", nodes.length == 20 ? "20px" : "9px")
 
         //END OF TEXT VERSION
 
@@ -219,5 +233,48 @@
 			// function gridOver(d) {
 			//     d3.selectAll("rect").style("stroke-width", function(p) { return p.x == d.x || p.y == d.y ? "3px" : "1px"});
 			// };
+
+      // Select a node specifically - TEXT VERSION
+      // d3.select("svg")
+      //     .append("g")
+      //     .attr("transform","translate(50,45)")
+      //     .selectAll("text")
+      //     .data(nodes)
+      //     .enter()
+      //     .append("text")
+      //     .attr("x", (d,i) => i * width + width/2)
+      //     .text(d => d.id)
+      //     .style("text-anchor","middle")
+      //     .style("font-size", function(d){
+      //       console.log(d);
+      //       for(var h = 0; h < highlights.length; h++){
+      //         var hp = highlights[h].split("-");
+      //         if(d.id.localeCompare(hp[1]) === 0){
+      //           return nodes.length == 20 ? "20px" : "12px";
+      //         }
+      //       }
+      //       return "0px";
+      //     })
+      //
+      //     d3.select("svg")
+      //         .append("g").attr("transform","translate(45,50)")
+      //         .selectAll("text")
+      //         .data(nodes)
+      //         .enter()
+      //         .append("text")
+      //         .attr("y",(d,i) => i * height + height/1.3)
+      //         .text(d => d.id)
+      //         .style("text-anchor","end")
+      //         .style("font-size", function(d){
+      //           console.log(d);
+      //           for(var h = 0; h < highlights.length; h++){
+      //             var hp = highlights[h].split("-");
+      //             if(d.id.localeCompare(hp[0]) === 0){
+      //               return nodes.length == 20 ? "20px" : "12px";
+      //             }
+      //           }
+      //           return "0px";
+      //         })
+      //END OF TEXT VERSION
 
 			};

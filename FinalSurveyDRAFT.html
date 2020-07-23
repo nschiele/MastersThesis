@@ -38,13 +38,29 @@
     </body>
     <script>
 
+
+        const DEBUG_TEST = true;
         const BIPARTITE = 1;
         const NODELINK = 2;
         const ADJACENCY = 3;
-        const stimu_h = 700;
-        const stimu_w = 700;
+        const stimu_h = 750;
+        const stimu_w = 750;
 
         const TYPE = Math.floor(Math.random() * 3) + 1;
+
+        var typeString = "";
+        switch(TYPE){
+          case 1:
+            typeString = "Bipartite";
+            break;
+          case 2:
+            typeString = "Node Link";
+            break;
+          case 3:
+            typeString = "Adjacency Matrix";
+            break;
+        }
+        console.log("This Survey is of type: " + typeString);
 
       /* create timeline */
          var timeline = [];
@@ -54,7 +70,7 @@
            type: "html-keyboard-response",
            stimulus: "Welcome to the study. Press any key to begin."
          };
-         timeline.push(welcome);
+         DEBUG_TEST ? console.log("Skipping Welcome") : timeline.push(welcome);
 
 
          var check_consent = function(elem) {
@@ -76,7 +92,7 @@
            cont_btn: "start",
            check_fn: check_consent
          };
-         timeline.push(consent);
+         DEBUG_TEST ? console.log("Skipping Consent") : timeline.push(consent);
 
 
          var userID = "";
@@ -92,7 +108,7 @@
           }
 
         };
-        timeline.push(id_collection);
+        DEBUG_TEST ? console.log("Skipping ID") : timeline.push(id_collection);
 
         var demographics = {
           type: 'survey-multi-choice',
@@ -102,7 +118,7 @@
             {prompt: "<b>What is the highest level of education you have completed?</b>", options: ["High School Diploma or Equivalent", "Some College", "Associates Degree", "Bachelors", "Masters", "Ph.D. or other doctoral degree"], name:"Education", required: false, horizontal: false}
           ],
         };
-        timeline.push(demographics);
+        DEBUG_TEST ? console.log("Skipping Demographics") : timeline.push(demographics);
 
 
 
@@ -281,7 +297,7 @@
               pages: ins_pages,
               show_clickable_nav: true
           }
-          timeline.push(instructions)
+          DEBUG_TEST ? console.log("Skipping Instructions") : timeline.push(instructions)
 
 
 
@@ -294,11 +310,11 @@
 
 
        var scale = [
-         "Very Difficult",
-         "Somewhat Difficult",
-         "Neutral",
-         "Somewhat Easy",
-         "Very Easy"
+          "Very Difficult",
+          "Somewhat Difficult",
+          "Neutral",
+          "Somewhat Easy",
+          "Very Easy"
           ];
 
        var likert_page = {

@@ -70,7 +70,7 @@ function renderBIGraph(jsonFileData, height, width, highlight, base_node_color, 
 						change[1] = change[1]+"_t";
 					var nodes = bipartiteData.nodes;
 					nodes.forEach(node => {
-						if(node.id.localeCompare(change[0]) === 0 ||node.id.localeCompare(change[1]) === 0 ){
+						//if(node.id.localeCompare(change[0]) === 0 ||node.id.localeCompare(change[1]) === 0 ){
 							//UNCOMMENT FOR COLOR VERSION
 							var newStyle = {lineWidth: 2,fill: ColorHighlights ? highlight_node_color : nodeColor};
 							node.style = newStyle;
@@ -78,9 +78,10 @@ function renderBIGraph(jsonFileData, height, width, highlight, base_node_color, 
 							node.label = node.id.split("_")[0];
 							node.labelCfg = {
 								offset: 10,
-								position: node.id.endsWith('_s')? 'left' : 'right'
+								position: node.id.endsWith('_s')? 'left' : 'right',
+								style: (node.id.localeCompare(change[0]) === 0 || node.id.localeCompare(change[1]) === 0) ?  {fill: 'red'} : {fill: 'black'}
 							};
-						}
+						//}
 					});
 				}
 
