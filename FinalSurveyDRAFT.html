@@ -122,6 +122,11 @@
 
 
 
+        var start_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto; border-radius:7px;'>";
+        var hover_for_answer = "<i style='width:50%; margin:auto; font-size:12px'>Hover your mouse over the black square for the answer</i>";
+
+
+
 //style for internal div
 // style='float: left;'
 
@@ -396,26 +401,30 @@
           }
         }
 
-        var SP_example = "";
+        var sp_soln = "<div class='answer'>3</div>";
+        var SP_example = start_example;
         switch(TYPE){
           case BIPARTITE:
-            SP_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-            "<p> </p><img src='img/BP_SP_example.png'></img>"+
+            SP_example += "<p> </p><img src='img/BP_SP_example.png'></img>"+
             "<p>How many edges are in the shortest path from node G to node B?</p>"+
+            sp_soln+
+            hover_for_answer+
             "</div>"+
             "<p> </p><p style='width: 600px; margin: auto;'><i></i><p>";
             break;
           case NODELINK:
-            SP_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-            "<p> </p><img src='img/NL_SP_example.png'></img>"+
+            SP_example += "<p> </p><img src='img/NL_SP_example.png'></img>"+
             "<p>How many edges are in the shortest path from node G to node B?</p>"+
+            sp_soln+
+            hover_for_answer+
             "</div>"+
             "<p> </p><p style='width: 600px; margin: auto;'><i></i><p>";
             break;
           case ADJACENCY:
-            SP_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-            "<p> </p><img src='img/AM_SP_example.png'></img>"+
+            SP_example += "<p> </p><img src='img/AM_SP_example.png'></img>"+
             "<p>How many edges are in the shortest path from node G to node B?</p>"+
+            sp_soln+
+            hover_for_answer+
             "</div>"+
             "<p> </p><p style='width: 600px; margin: auto;'><i></i><p>";
             break;
@@ -501,26 +510,31 @@
            prompt: "<div style='width: 800px'><p>How many incoming edges does node "+IL_highlight[5][0].split("-")[0]+" have?</p></div>"}
            ]
 
-       var IL_example = "";
+
+       var il_soln = "<div class='answer'>3</div>";
+       var IL_example = start_example;
        switch(TYPE){
          case BIPARTITE:
-           IL_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-           "<p> </p><img src='img/BP_IL_example.png'></img>"+
+           IL_example += "<p> </p><img src='img/BP_IL_example.png'></img>"+
            "<p>How many incoming edges does node B have?</p>"+
+           il_soln+
+           hover_for_answer+
            "</div>"+
            "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the right column of a bipartite visualization representes the incoming edges of a node</i><p>";
            break;
          case NODELINK:
-           IL_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-           "<p> </p><img src='img/NL_IL_example.png'></img>"+
+           IL_example += "<p> </p><img src='img/NL_IL_example.png'></img>"+
            "<p>How many incoming edges does node B have?</p>"+
+           il_soln+
+           hover_for_answer+
            "</div>"+
            "<p> </p><p style='width: 600px; margin: auto;'>We will only be asking about incoming edges<p>";
            break;
          case ADJACENCY:
-           IL_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-           "<p> </p><img src='img/AM_IL_example.png'></img>"+
+           IL_example += "<p> </p><img src='img/AM_IL_example.png'></img>"+
            "<p>How many incoming edges does node B have?</p>"+
+           il_soln+
+           hover_for_answer+
            "</div>"+
            "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the filled in squares of a column of a matrix visualization representes the incoming edges of a node</i><p>";
            break;
@@ -623,27 +637,30 @@
           prompt: "<div style='width: 800px'><p>How many common neighbors are between "+CN_highlight[5][0].split("-")[0]+" and "+CN_highlight[5][1].split("-")[0]+"?</p></div>"},
            ]
 
-
-       var CN_example = "";
+       var cn_soln = "<div class='answer'>0</div>";
+       var CN_example = start_example;
        switch(TYPE){
          case BIPARTITE:
-           CN_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-           "<p> </p><img src='img/BP_SG_example.png'></img>"+
+           CN_example += "<p> </p><img src='img/BP_SG_example.png'></img>"+
            "<p>How many common neighbors are between B and F?</p>"+
+           cn_soln+
+           hover_for_answer+
            "</div>"+
            "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the right column of a bipartite visualization representes the incoming edges of a node, and the left column represents the outgoing edges of a node.</i><p>";
            break;
          case NODELINK:
-           CN_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-           "<p> </p><img src='img/NL_SG_example.png'></img>"+
+           CN_example += "<p> </p><img src='img/NL_SG_example.png'></img>"+
            "<p>How many common neighbors are between B and F?</p>"+
+           cn_soln+
+           hover_for_answer+
            "</div>"+
            "<p> </p><p style='width: 600px; margin: auto;'><p>";
            break;
          case ADJACENCY:
-           CN_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-           "<p> </p><img src='img/AM_SG_example.png'></img>"+
+           CN_example += "<p> </p><img src='img/AM_SG_example.png'></img>"+
            "<p>How many common neighbors are between B and F?</p>"+
+           cn_soln+
+           hover_for_answer+
            "</div>"+
            "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the filled in squares of a column of a matrix visualization representes the incoming edges of a node, and the filled in squares of a row of a matrix visualization represents the outgoing edges of a node.</i><p>";
            break;
@@ -733,26 +750,31 @@
           prompt: "<div style='width: 800px'><p>Are node "+SG_highlight[5][0].split("-")[0]+" and node "+SG_highlight[5][1].split("-")[0]+" in the same group?</p></div>"},
            ]
 
-           var SG_example = "";
+
+           var sg_soln = "<div class='answer'>Yes</div>";
+           var SG_example = start_example;
            switch(TYPE){
              case BIPARTITE:
-               SG_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-               "<p> </p><img src='img/BP_SG_example.png'></img>"+
+               SG_example += "<p> </p><img src='img/BP_SG_example.png'></img>"+
                "<p>Are node B and node F in the same group?</p>"+
+               sg_soln+
+               hover_for_answer+
                "</div>"+
                "<p> </p><p style='width: 600px; margin: auto;'><i> </i><p>";
                break;
              case NODELINK:
-               SG_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-               "<p> </p><img src='img/NL_SG_example.png'></img>"+
+               SG_example += "<p> </p><img src='img/NL_SG_example.png'></img>"+
                "<p>Are node B and node F in the same group?</p>"+
+               sg_soln+
+               hover_for_answer+
                "</div>"+
                "<p> </p><p style='width: 600px; margin: auto;'><p>";
                break;
              case ADJACENCY:
-               SG_example = "<div style='width: 500px; padding: 10px; background: #F0F0F0; margin: auto;'>"+
-               "<p> </p><img src='img/AM_SG_example.png'></img>"+
+               SG_example += "<p> </p><img src='img/AM_SG_example.png'></img>"+
                "<p>Are node B and node F in the same group?</p>"+
+               sg_soln+
+               hover_for_answer+
                "</div>"+
                "<p> </p><p style='width: 600px; margin: auto;'><i> </i><p>";
                break;

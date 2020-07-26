@@ -23,3 +23,13 @@ circle.source {
 circle.target {
   fill: #41A368;
 }
+.answer{
+  margin:auto;
+  width: 50%;
+  background:#0B0B0B;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.answer:hover{
+  background:none;
+}
