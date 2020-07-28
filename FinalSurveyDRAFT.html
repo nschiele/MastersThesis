@@ -46,7 +46,7 @@
         const stimu_h = 750;
         const stimu_w = 750;
 
-        const TYPE = Math.floor(Math.random() * 3) + 1;
+        const TYPE = 3//Math.floor(Math.random() * 3) + 1;
 
         var typeString = "";
         switch(TYPE){
@@ -314,18 +314,28 @@
                          'JSON/pilot_50_4_3_ordered.json']
 
 
-       var scale = [
+       var scale1 = [
           "Very Difficult",
           "Somewhat Difficult",
           "Neutral",
           "Somewhat Easy",
           "Very Easy"
           ];
+      var scale3 = [
+         "Not at all confident",
+         "Somewhat unconfident",
+         "Neutral",
+         "Somewhat confident",
+         "Very confident"
+         ];
 
        var likert_page = {
          type: 'survey-likert',
          questions: [
-           {prompt: "How difficult was the previous question?", labels: scale, required: true}
+           {prompt: "How difficult was the previous question?", labels: scale1, required: true},
+          // {prompt: "Were you able to find an answer to the question? If not, why?", labels: scale2, required: true},
+           {prompt: "How confident are you in your answer to the previous question?", labels: scale3, required: true},
+
          ],
          on_finish:function(data){
            data.user = userID
