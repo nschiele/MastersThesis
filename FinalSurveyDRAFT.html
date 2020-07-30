@@ -27,9 +27,9 @@
         <script src="https://d3js.org/d3-timer.v1.min.js"></script>
         <script src="https://d3js.org/d3-force.v2.min.js"></script>
 
-        <script src="JS/AdjacencyMat_n.js"></script>
-        <script src="JS/Bipartite_n.js"></script>
-        <script src="JS/network_d3-force_n.js"></script>
+        <script src="JS/AdjacencyMat.js"></script>
+        <script src="JS/Bipartite.js"></script>
+        <script src="JS/network_d3-force.js"></script>
 
 
     </head>
@@ -147,29 +147,29 @@
         "<p style='width: 700px;'>This is a node link visualization. Each node is representated as a circle. "+
         "The connections between nodes are visualized as a arrow."+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/nl_ex.png'></img>"+
+        "<div><img src='img/NL_ex_1.png'></img>"+
         "</div>";
 
         var nl_instructions_2 =
-        "<h2>Adjacency Matrix Visualization</h2>"+
+        "<h2>Node Link Visualization</h2>"+
         "<p></p><p></p>"+
         "<p style='width: 700px;'>Here we see a single highlighted node, in this case, it is the node labeled 'B'. "+
         "We can see there is a single outgoing edge from node B. "+
         "We can also see that there are three incoming edges from other nodes to node B. "+
         "</p>"+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/NL_IL_example.png'></img>"+
+        "<div><img src='img/NL_ex_2.png'></img>"+
         "</div>";
 
         var nl_instructions_3 =
-        "<h2>Adjacency Matrix Visualization</h2>"+
+        "<h2>Node Link Visualization</h2>"+
         "<p></p><p></p>"+
         "<p style='width: 700px;'>Each node is only represented once. "+
         "We can see that there is a single edge from node J to node B. We can also see that there are no edges from node B to node J.<br/> "+
         ""+
         "</p>"+
         "<div style='width: 700px;'>"+
-        "<img src='img/NL_CN_example.png'></img>"+
+        "<img src='img/NL_ex_3.png'></img>"+
         "</div>";
 
         var am_instructions_1 =
@@ -181,7 +181,7 @@
         "The <b>row</b> a filled in box corresponds with the source of the connection, "+
         "and the <b>column</b> of a filled in box corresponds with the target of the connection"+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/am_ex.png'></img>"+
+        "<div><img src='img/AM_ex_1.png'></img>"+
         "</div>";
 
 
@@ -189,12 +189,12 @@
         "<h2>Adjacency Matrix Visualization</h2>"+
         "<p></p><p></p>"+
         "<p style='width: 700px;'>Here we see a single highlighted node, in this case, it is the node labeled 'B'. "+
-        "The filled in boxes in the <b>row</b> correspond with outgoing edges. So we see that there is a single outgoing edge from node B to the \"first\" node "+
+        "The filled in boxes in the <b>row</b> correspond with outgoing edges. So we see that there is a single outgoing edge from node B to node A "+
         "</p><p style='width: 700px;'>The filled in boxes in the <b>column</b> correspond with incoming edges. "+
         "So we can see that node B has 3 incomming edges. "+
         "and the column of a filled in box corresponds with the target of the connection"+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/AM_IL_example.png'></img>"+
+        "<div><img src='img/AM_ex_2.png'></img>"+
         "</div>";
 
         var am_instructions_3 =
@@ -205,20 +205,20 @@
         ""+
         "</p>"+
         "<div style='width: 700px;'>"+
-        "<img src='img/AM_CN_example.png'></img>"+
+        "<img src='img/AM_ex_3.png'></img>"+
         "</div>";
 
         var am_instructions_4 =
         "<h2>Adjacency Matrix Visualization</h2>"+
         "<p></p><p></p>"+
         "<p style='width: 700px;'>These two networks present the same information. "+
-        "Please take a moment to convince yourself that these networks are the same. The same two nodes B and J are highlighted on both networks.<br/> "+
+        "Please take a moment to convince yourself that these networks are the same.<br/> "+
         ""+
         "</p>"+
         "<div style='width: 800px;'>"+
-        "<div style='float: left;'><img style='width: 400px;' src='img/AM_CN_example.png'></img>" +
+        "<div style='float: left;'><img style='width: 400px;' src='img/AM_ex_1.png'></img>" +
         "<p class='small'><strong></strong></p></div>" +
-        "<div class='float: right;'><img style='width: 400px;' src='img/NL_CN_example.png'></img>" +
+        "<div class='float: right;'><img style='width: 400px;' src='img/NL_ex_1.png'></img>" +
         "<p class='small'><strong></strong></p></div></div>";
 
         var bp_instructions_1 =
@@ -230,19 +230,19 @@
         "the first column corresponds with the source of the connection, "+
         "and the second column corresponds with the target of the connection"+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/bp_ex.png'></img>"+
+        "<div><img src='img/BP_ex_1.png'></img>"+
         "</div>";
 
         var bp_instructions_2 =
         "<h2>Bipartite Visualization</h2>"+
         "<p></p><p></p>"+
         "<p style='width: 700px;'>Here we see a single highlighted node, in this case, it is the node labeled 'B'. "+
-        "The nodes the <b>left</b> correspond with outgoing edges. So we see that there is a single outgoing edge from node B to the \"first\" node "+
+        "The nodes the <b>left</b> correspond with outgoing edges. So we see that there is a single outgoing edge from node B to node A "+
         "</p><p style='width: 700px;'>The nodes on the <b>right</b> correspond with incoming edges. "+
         "So we can see that node B has 3 incomming edges. "+
         ""+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/BP_IL_example.png'></img>"+
+        "<div><img src='img/BP_ex_2.png'></img>"+
         "</div>";
 
         var bp_instructions_3 =
@@ -253,20 +253,20 @@
         ""+
         "</p>"+
         "<div style='width: 700px;'>"+
-        "<img src='img/BP_CN_example.png'></img>"+
+        "<img src='img/BP_ex_3.png'></img>"+
         "</div>";
 
         var bp_instructions_4 =
         "<h2>Bipartite Visualization</h2>"+
         "<p></p><p></p>"+
         "<p style='width: 700px;'>These two networks present the same information. "+
-        "Please take a moment to convince yourself that these networks are the same. The same two nodes B and J are highlighted on both networks.<br/> "+
+        "Please take a moment to convince yourself that these networks are the same.<br/> "+
         ""+
         "</p>"+
         "<div style='width: 800px;'>"+
-        "<div style='float: left;'><img style='width: 400px;' src='img/BP_CN_example.png'></img>" +
+        "<div style='float: left;'><img style='width: 400px;' src='img/BP_ex_1.png'></img>" +
         "<p class='small'><strong></strong></p></div>" +
-        "<div class='float: right;'><img style='width: 400px;' src='img/NL_CN_example.png'></img>" +
+        "<div class='float: right;'><img style='width: 400px;' src='img/NL_ex_1.png'></img>" +
         "<p class='small'><strong></strong></p></div></div>";
 
         var instructions_end = "<h2>End of Instructions</h2>" +
@@ -289,7 +289,7 @@
           case NODELINK:
             ins_pages.push(nl_instructions_1);
             ins_pages.push(nl_instructions_2);
-            ins_pages.push(nl_instructions_1);
+            ins_pages.push(nl_instructions_3);
             break;
           case ADJACENCY:
             ins_pages.push(am_instructions_1);
@@ -301,7 +301,7 @@
 
         ins_pages.push(instructions_end);
 
-        console.log(ins_pages);
+        //console.log(ins_pages);
 
          var instructions = {
               type: 'instructions',
@@ -537,7 +537,7 @@
        var IL_example = start_example;
        switch(TYPE){
          case BIPARTITE:
-           IL_example += "<p> </p><img src='img/BP_IL_example.png'></img>"+
+           IL_example += "<p> </p><img src='img/BP_ex_2.png'></img>"+
            "<p>How many incoming edges does node B have?</p>"+
            il_soln+
            hover_for_answer+
@@ -545,7 +545,7 @@
            "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the right column of a bipartite visualization representes the incoming edges of a node</i><p>";
            break;
          case NODELINK:
-           IL_example += "<p> </p><img src='img/NL_IL_example.png'></img>"+
+           IL_example += "<p> </p><img src='img/NL_ex_2.png'></img>"+
            "<p>How many incoming edges does node B have?</p>"+
            il_soln+
            hover_for_answer+
@@ -553,7 +553,7 @@
            "<p> </p><p style='width: 600px; margin: auto;'>We will only be asking about incoming edges<p>";
            break;
          case ADJACENCY:
-           IL_example += "<p> </p><img src='img/AM_IL_example.png'></img>"+
+           IL_example += "<p> </p><img src='img/AM_ex_2.png'></img>"+
            "<p>How many incoming edges does node B have?</p>"+
            il_soln+
            hover_for_answer+
@@ -662,28 +662,28 @@
           prompt: "<div style='width: 800px'><p>How many common neighbors are between "+CN_highlight[5][0].split("-")[0]+" and "+CN_highlight[5][1].split("-")[0]+"?</p></div>"},
            ]
 
-       var cn_soln = "<div class='answer'>0</div>";
+       var cn_soln = "<div class='answer'>1</div>";
        var CN_example = start_example;
        switch(TYPE){
          case BIPARTITE:
-           CN_example += "<p> </p><img src='img/BP_SG_example.png'></img>"+
-           "<p>How many common neighbors are between B and F?</p>"+
+           CN_example += "<p> </p><img src='img/BP_CN_example.png'></img>"+
+           "<p>How many common neighbors are between F and J?</p>"+
            cn_soln+
            hover_for_answer+
            "</div>"+
            "<p> </p><p style='width: 600px; margin: auto;'><i>Remember that the right column of a bipartite visualization representes the incoming edges of a node, and the left column represents the outgoing edges of a node.</i><p>";
            break;
          case NODELINK:
-           CN_example += "<p> </p><img src='img/NL_SG_example.png'></img>"+
-           "<p>How many common neighbors are between B and F?</p>"+
+           CN_example += "<p> </p><img src='img/NL_CN_example.png'></img>"+
+           "<p>How many common neighbors are between F and J?</p>"+
            cn_soln+
            hover_for_answer+
            "</div>"+
            "<p> </p><p style='width: 600px; margin: auto;'><p>";
            break;
          case ADJACENCY:
-           CN_example += "<p> </p><img src='img/AM_SG_example.png'></img>"+
-           "<p>How many common neighbors are between B and F?</p>"+
+           CN_example += "<p> </p><img src='img/AM_CN_example.png'></img>"+
+           "<p>How many common neighbors are between F and J?</p>"+
            cn_soln+
            hover_for_answer+
            "</div>"+
@@ -888,6 +888,12 @@
         timeline.push(test_procedures[1]);
         timeline.push(test_procedures[2]);
         timeline.push(test_procedures[3]);
+
+        console.log("The task order is as follows: ")
+        console.log(test_procedures[0].timeline[0].stimulus.split("Instructions for ")[1].split(" </b>")[0])
+        console.log(test_procedures[1].timeline[0].stimulus.split("Instructions for ")[1].split(" </b>")[0])
+        console.log(test_procedures[2].timeline[0].stimulus.split("Instructions for ")[1].split(" </b>")[0])
+        console.log(test_procedures[3].timeline[0].stimulus.split("Instructions for ")[1].split(" </b>")[0])
 
         //Trying to add likert responses to graph data
 
