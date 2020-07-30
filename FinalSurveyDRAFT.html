@@ -38,8 +38,11 @@
     </body>
     <script>
 
+        var userID = jsPsych.randomization.randomID(10);
+        jsPsych.data.addProperties({user: userID});
 
-        const DEBUG_TEST = true;
+
+        const DEBUG_TEST = false;
         const BIPARTITE = 1;
         const NODELINK = 2;
         const ADJACENCY = 3;
@@ -95,20 +98,20 @@
          DEBUG_TEST ? console.log("Skipping Consent") : timeline.push(consent);
 
 
-         var userID = "";
-         //Mturk id collection
-         var id_collection = {
-          type: 'survey-text',
-          questions: [
-            {prompt: "What is your mTurk ID?", required: true},
-          ],
-          on_finish:function(data){
-            userID = data.responses.split('"')[3];
-            //console.log(userID);
-          }
 
-        };
-        DEBUG_TEST ? console.log("Skipping ID") : timeline.push(id_collection);
+         //Mturk id collection
+        //  var id_collection = {
+        //   type: 'survey-text',
+        //   questions: [
+        //     {prompt: "What is your mTurk ID?", required: true},
+        //   ],
+        //   on_finish:function(data){
+        //     userID = data.responses.split('"')[3];
+        //     //console.log(userID);
+        //   }
+        //
+        // };
+        // DEBUG_TEST ? console.log("Skipping ID") : timeline.push(id_collection);
 
         var demographics = {
           type: 'survey-multi-choice',
@@ -117,6 +120,9 @@
             {prompt: "<b>What is your gender?</b>", options: ["Male", "Female", "Other"], name:"Sex", required: false, horizontal: false},
             {prompt: "<b>What is the highest level of education you have completed?</b>", options: ["High School Diploma or Equivalent", "Some College", "Associates Degree", "Bachelors", "Masters", "Ph.D. or other doctoral degree"], name:"Education", required: false, horizontal: false}
           ],
+          on_finish:function(data){
+            data.user = userID
+          }
         };
         DEBUG_TEST ? console.log("Skipping Demographics") : timeline.push(demographics);
 
@@ -300,7 +306,10 @@
          var instructions = {
               type: 'instructions',
               pages: ins_pages,
-              show_clickable_nav: true
+              show_clickable_nav: true,
+              on_finish:function(data){
+                data.user = userID
+              }
           }
           DEBUG_TEST ? console.log("Skipping Instructions") : timeline.push(instructions)
 
@@ -453,7 +462,10 @@
           SP_example+
           "<p>"+
           "This task will start after you press any key."+
-          "</p></div>"
+          "</p></div>",
+          on_finish:function(data){
+            data.user = userID
+          }
         };
 
 
@@ -561,7 +573,10 @@
          IL_example+
          "<p>"+
          "This task will start after you press any key."+
-         "</p></div>"
+         "</p></div>",
+         on_finish:function(data){
+           data.user = userID
+         }
        };
 
         var IL_test = {
@@ -687,7 +702,10 @@
          CN_example+
          "<p>"+
          "This task will start after you press any key."+
-         "</p></div>"
+         "</p></div>",
+         on_finish:function(data){
+           data.user = userID
+         }
        };
 
         var CN_test = {
@@ -801,7 +819,10 @@
              SG_example+
              "<p>"+
              "This task will start after you press any key."+
-             "</p></div>"
+             "</p></div>",
+             on_finish:function(data){
+               data.user = userID
+             }
            };
 
 
@@ -867,6 +888,68 @@
         timeline.push(test_procedures[1]);
         timeline.push(test_procedures[2]);
         timeline.push(test_procedures[3]);
+
+        //Trying to add likert responses to graph data
+
+
+
+        var SubmitTrial = {
+            type: 'html-button-response',
+            stimulus: '<h1>End of the Study</h1>',
+            choices: ['Submit'],
+            prompt: "<p>Press Submit to get the secret code to enter into Mturk</p>",
+            on_finish: function() {
+                    jsPsych.data.displayData();
+
+              on_finish: {
+                var currData = JSON.parse(jsPsych.data.get().filterCustom(function(trial){
+                  return trial.rt != null;
+                }).json());
+
+                //console.log(typeof(currData));
+                //console.log(currData);
+
+                //Removes likert as a separate log entry.
+                for(var i = 0; i < currData.length; i++){
+                  //console.log(currData[i]);
+                  if(currData[i].task != null){
+                    currData[i].responses = currData[i+1].responses;
+                    currData.splice(i+1,1);
+                  }
+                }
+
+                //console.log(currData);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'write_data.php'); // change 'write_data.php' to point to php script.
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onload = function() {
+                if(xhr.status == 200){
+                  console.log(xhr.responseText);
+                  var response = JSON.parse(JSON.stringify(xhr.responseText));
+                  console.log(response.success);
+                }
+                };
+                //console.log(jsPsych.data.get().json());
+                //Only count data with a response time = leave out fixations
+                // xhr.send(jsPsych.data.get().filterCustom(function(trial){
+                //   return trial.rt != null;
+                // }).json());
+                xhr.send(JSON.stringify(currData));
+
+                }
+              }
+            };
+        timeline.push(SubmitTrial);
+
+
+        var FinalPage = {
+            type: 'html-keyboard-response',
+            stimulus: '<h1>Secret Code</h1><p>Your secret code is: <b>'+userID+'</b></p>',
+            choices: jsPsych.NO_KEYS
+        };
+        timeline.push(FinalPage);
+
 
 
 

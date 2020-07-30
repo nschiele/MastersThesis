@@ -301,7 +301,7 @@ jsPsych.plugins["json-graph-button-response"] = (function() {
       var trial_data = {
         "rt": response.rt,
         "stimulus": trial.stimulus,
-        "button_pressed": response.button
+        "response": response.button
       };
 
       // clear the display
