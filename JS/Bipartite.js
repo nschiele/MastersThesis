@@ -27,7 +27,7 @@ function renderBIGraph(jsonFileData, height, width, highlight, base_node_color, 
             height: height,
             defaultNode: {
                 size: 8,
-                //color: nodeColor,
+                color: nodeColor,
                 style: {
                     lineWidth: 2,
                     fill: nodeColor,
@@ -64,12 +64,18 @@ function renderBIGraph(jsonFileData, height, width, highlight, base_node_color, 
         });
 
         //Change one node to a new color
-				for (var h = 0; h < highlight.length; h++){
-					var change = highlight[h].split("-");
-						change[0] = change[0]+"_s";
-						change[1] = change[1]+"_t";
+
 					var nodes = bipartiteData.nodes;
 					nodes.forEach(node => {
+						var hl_node = false;
+						for (var h = 0; h < highlight.length; h++){
+							var change = highlight[h].split("-");
+								change[0] = change[0]+"_s";
+								change[1] = change[1]+"_t";
+								if(node.id.localeCompare(change[0]) === 0 || node.id.localeCompare(change[1]) === 0){
+									hl_node = true;
+								}
+							}
 						//if(node.id.localeCompare(change[0]) === 0 ||node.id.localeCompare(change[1]) === 0 ){
 							//UNCOMMENT FOR COLOR VERSION
 							var newStyle = {lineWidth: 2,fill: ColorHighlights ? highlight_node_color : nodeColor};
@@ -79,11 +85,11 @@ function renderBIGraph(jsonFileData, height, width, highlight, base_node_color, 
 							node.labelCfg = {
 								offset: 10,
 								position: node.id.endsWith('_s')? 'left' : 'right',
-								style: (node.id.localeCompare(change[0]) === 0 || node.id.localeCompare(change[1]) === 0) ?  {fill: 'red'} : {fill: 'black'}
+								style: hl_node ?  {fill: 'red', fontSize:18} : {fill: 'black', fontSize:18},
 							};
 						//}
 					});
-				}
+
 
 
 
