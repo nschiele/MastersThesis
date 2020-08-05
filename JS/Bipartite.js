@@ -1,5 +1,5 @@
 function renderBIGraph(jsonFileData, height, width, highlight, base_node_color, highlight_node_color){
-		const ColorHighlights = false;
+		const ColorHighlights = true;
 		//console.log(height + "    " +  width);
 		var nodeColor = base_node_color;
 		var remoteData = jsonFileData;//await response.json();
