@@ -141,6 +141,15 @@
                       " and how the information is expressed.</p>" +
                       "<p>Press Continue to go to the next slide.</p>";
 
+        var pre_am_bp_instructions =
+        "<h2>Graph Theory</h2>"+
+        "<p></p><p></p>"+
+        "<p style='width: 700px; text-align: left;'>This is a graph. Graphs represented connected data, where individual nodes (circles) are connected to each other visa edges (arrows).
+        For example, you could think of supply chain as a graph. Every business would be a node, and every business that supplies another business would be represented as edges between those nodes."+
+        "<div style='width: 700px;'>"+
+        "<div><img src='img/NL_ex_1.png'></img>"+
+        "</div>";
+
         var nl_instructions_1 =
         "<h2>Node Link Visualization</h2>"+
         "<p></p><p></p>"+
@@ -281,6 +290,7 @@
 
         switch(TYPE){
           case BIPARTITE:
+            ins_pages.push(pre_am_bp_instructions);
             ins_pages.push(bp_instructions_1);
             ins_pages.push(bp_instructions_2);
             ins_pages.push(bp_instructions_3);
@@ -292,6 +302,7 @@
             ins_pages.push(nl_instructions_3);
             break;
           case ADJACENCY:
+            ins_pages.push(pre_am_bp_instructions);
             ins_pages.push(am_instructions_1);
             ins_pages.push(am_instructions_2);
             ins_pages.push(am_instructions_3);
@@ -391,17 +402,23 @@
 
         var SP_stimuli = [
           {stimulus: {file:file_list[0], type:TYPE, highlight:SP_highlight[0]},
-           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[0][0].split("-")[0] + " to node " + SP_highlight[0][0].split("-")[1] + "?</p></div>"},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[0][0].split("-")[0] + " to node " + SP_highlight[0][0].split("-")[1] + "?</p>"+
+           "<p style='font-size: 12px;'><i>If no path exists between the highlighted nodes, please insert 0</i></p></div>"},
           {stimulus: {file:file_list[1], type:TYPE, highlight:SP_highlight[1]},
-           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[1][0].split("-")[0] + " to node " + SP_highlight[1][0].split("-")[1] + "?</p></div>"},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[1][0].split("-")[0] + " to node " + SP_highlight[1][0].split("-")[1] + "?</p>"+
+           "<p style='font-size: 12px;'><i>If no path exists between the highlighted nodes, please insert 0</i></p></div>"},
           {stimulus: {file:file_list[2], type:TYPE, highlight:SP_highlight[2]},
-           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[2][0].split("-")[0] + " to node " + SP_highlight[2][0].split("-")[1] + "?</p></div>"},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[2][0].split("-")[0] + " to node " + SP_highlight[2][0].split("-")[1] + "?</p>"+
+           "<p style='font-size: 12px;'><i>If no path exists between the highlighted nodes, please insert 0</i></p></div>"},
           {stimulus: {file:file_list[3], type:TYPE, highlight:SP_highlight[3]},
-           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[3][0].split("-")[0] + " to node " + SP_highlight[3][0].split("-")[1] + "?</p></div>"},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[3][0].split("-")[0] + " to node " + SP_highlight[3][0].split("-")[1] + "?</p>"+
+           "<p style='font-size: 12px;'><i>If no path exists between the highlighted nodes, please insert 0</i></p></div>"},
           {stimulus: {file:file_list[4], type:TYPE, highlight:SP_highlight[4]},
-           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[4][0].split("-")[0] + " to node " + SP_highlight[4][0].split("-")[1] + "?</p></div>"},
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[4][0].split("-")[0] + " to node " + SP_highlight[4][0].split("-")[1] + "?</p>"+
+           "<p style='font-size: 12px;'><i>If no path exists between the highlighted nodes, please insert 0</i></p></div>"},
           {stimulus: {file:file_list[5], type:TYPE, highlight:SP_highlight[5]},
-           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[5][0].split("-")[0] + " to node " + SP_highlight[5][0].split("-")[1] + "?</p></div>"}
+           prompt: "<div style='width: 800px'><p>How many edges are in the shortest path from node " + SP_highlight[5][0].split("-")[0] + " to node " + SP_highlight[5][0].split("-")[1] + "?</p>"+
+           "<p style='font-size: 12px;'><i>If no path exists between the highlighted nodes, please insert 0</i></p></div>"}
            ]
 
         var SP_test = {
@@ -963,7 +980,8 @@
           timeline: timeline,
           on_finish: function() {
              jsPsych.data.displayData();
-           }
+           },
+           show_progress_bar: true
         });
 
 
