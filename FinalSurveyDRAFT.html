@@ -144,8 +144,8 @@
         var pre_am_bp_instructions =
         "<h2>Graph Theory</h2>"+
         "<p></p><p></p>"+
-        "<p style='width: 700px; text-align: left;'>This is a graph. Graphs represented connected data, where individual nodes (circles) are connected to each other visa edges (arrows).
-        For example, you could think of supply chain as a graph. Every business would be a node, and every business that supplies another business would be represented as edges between those nodes."+
+        "<p style='width: 700px; text-align: left;'>This is a graph. Graphs represented connected data, where individual nodes (circles) are connected to each other visa edges (arrows). "+
+        "For example, you could think of supply chain as a graph. Every business would be a node, and every business that supplies another business would be represented as edges between those nodes."+
         "<div style='width: 700px;'>"+
         "<div><img src='img/NL_ex_1.png'></img>"+
         "</div>";
@@ -297,6 +297,7 @@
             ins_pages.push(bp_instructions_4);
             break;
           case NODELINK:
+            ins_pages.push(pre_am_bp_instructions);
             ins_pages.push(nl_instructions_1);
             ins_pages.push(nl_instructions_2);
             ins_pages.push(nl_instructions_3);
