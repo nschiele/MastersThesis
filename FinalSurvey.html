@@ -92,7 +92,10 @@
            type:'external-html',
            url: "bp_consent.html",
            cont_btn: "start",
-           check_fn: check_consent
+           check_fn: check_consent,
+           on_finish:function(data){
+             jsPsych.setProgressBar(.01);
+           }
          };
          DEBUG_TEST ? console.log("Skipping Consent") : timeline.push(consent);
 
@@ -120,6 +123,7 @@
             {prompt: "<b>What is the highest level of education you have completed?</b>", options: ["High School Diploma or Equivalent", "Some College", "Associates Degree", "Bachelors", "Masters", "Ph.D. or other doctoral degree"], name:"Education", required: false, horizontal: false}
           ],
           on_finish:function(data){
+            jsPsych.setProgressBar(.02);
             data.user = userID
           }
         };
@@ -331,6 +335,7 @@
               show_clickable_nav: true,
               on_finish:function(data){
                 data.user = userID
+                jsPsych.setProgressBar(.05);
               }
           }
           DEBUG_TEST ? console.log("Skipping Instructions") : timeline.push(instructions)
@@ -369,6 +374,8 @@
 
          ],
          on_finish:function(data){
+           var proportion_complete = jsPsych.getProgressBarCompleted()
+           jsPsych.setProgressBar(proportion_complete + .038);
            data.user = userID
          }
         };
@@ -949,6 +956,7 @@
                     jsPsych.data.displayData();
 
               on_finish: {
+                jsPsych.setProgressBar(1.0);
                 var currData = JSON.parse(jsPsych.data.get().filterCustom(function(trial){
                   return trial.rt != null;
                 }).json());
@@ -992,7 +1000,7 @@
 
         var FinalPage = {
             type: 'html-keyboard-response',
-            stimulus: '<h1>Secret Code</h1><p>Your secret code is: <b>'+userID+'</b></p>',
+            stimulus: '<h1>Secret Code</h1><p>Your secret code is: <b>'+userID+'</b></p><br></br><p>Please insert this secret code into MTurk.</p>',
             choices: jsPsych.NO_KEYS
         };
         timeline.push(FinalPage);
@@ -1005,7 +1013,8 @@
           on_finish: function() {
              jsPsych.data.displayData();
            },
-           show_progress_bar: true
+           show_progress_bar: true,
+           auto_update_progress_bar: false
         });
 
 
