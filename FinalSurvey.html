@@ -147,14 +147,18 @@
 
 
         var network_theory_1 =
-        "<h2>Graph Theory</h2>"+
+        "<h2>Network Visualization</h2>"+
         "<p></p><p></p>"+
-        "<p style='width: 700px; text-align: left;'> Networks are a type of data that consist of vertices connected to each other via edges. "+
-        "Additionally, networks can be directed (meaning the edges point in one specific direction) or undirected (meaning the edges just connect two vertices, not in a specific direction). "+
-        "There are many different examples of networks, such as a transportation network, where vertices are towns and edges indicate if there is a direct connection between two towns. "+
+        "<p style='width: 700px; text-align: left;'>Networks are a type of data that consist of vertices connected via edges. "+
+        "Additionally, networks can be either, </p>" +
+        "<ul style='width: 700px; text-align: left;'><li><b>Directed</b>: The edges point in one specific direction</li> "+
+        "<li><b>Undirected</b>: The edges just connect two vertices, not in a specific direction</li></ul> "+
+        "<p style='width: 700px; text-align: left;'>There are many different examples of networks, such as a transportation network, where vertices are towns and edges indicate if there is a direct connection between two towns. "+
         "The example below is an example of a social network, where vertices are people and edges drawn between them indicate friendships."+
         "<div style='width: 700px;'>"+
         "<div><img src='img/Social_Network.png' width='400' height='400'></img>"+
+        "<p style='font-size: 10px;'><i> Source: https\://miro.medium.com/max/2560/0*kmxtSPw6uiyVsUho</i></p>"+
+        "<p style='width: 700px; text-align: left;'> There are different ways to represent networks, and this study aims to find which method is most effective with certain network comprehension tasks. </p>"+
         "</div>";
 
         var network_theory_2 =
@@ -172,7 +176,7 @@
         "<p style='width: 700px; text-align: left;'>This is a node link visualization of a network. Each node is representated as a circle. "+
         "The connections between nodes are visualized as a arrow."+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/NL_ex_1.png' width='400' height='320'></img>"+
+        "<div><img src='img/NL_ex_1.png' width='580' height='360'></img>"+
         "</div>";
 
         var nl_instructions_2 =
@@ -183,7 +187,7 @@
         "We can also see that there are three incoming edges from other nodes to node B. "+
         "</p>"+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/NL_ex_2.png' width='400' height='320'></img>"+
+        "<div><img src='img/NL_ex_2.png' width='580' height='360'></img>"+
         "</div>";
 
         var nl_instructions_3 =
@@ -194,7 +198,7 @@
         ""+
         "</p>"+
         "<div style='width: 700px;'>"+
-        "<img src='img/NL_ex_3.png' width='400' height='400'></img>"+
+        "<img src='img/NL_ex_3.png' width='580' height='360'></img>"+
         "</div>";
 
         var am_instructions_1 =
@@ -303,7 +307,7 @@
 
         ins_pages = [intro];
         ins_pages.push(network_theory_1);
-        ins_pages.push(network_theory_2);
+        //ins_pages.push(network_theory_2);
 
         switch(TYPE){
           case BIPARTITE:
@@ -709,7 +713,7 @@
             "<p style='font-size: 12px;'><i>If the highlighted nodes have no common neighbors, please insert 0</i></p></div>"},
            ]
 
-       var cn_soln = "<div class='answer'>1</div>";
+       var cn_soln = "<div class='answer'>1"+ (TYPE != NODELINK ? "  (B)" : " ") +"</div>";
        var CN_example = start_example;
        switch(TYPE){
          case BIPARTITE:

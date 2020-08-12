@@ -4,5 +4,5 @@
   $username = "root";
   $password = "mysql";
   $dbname = "StudyDatabase";
-  $table = "data2";
+  $table = "table1";
 ?>

@@ -89,6 +89,11 @@ jsPsych.plugins['survey-likert'] = (function() {
       html += options_string;
     }
 
+    html += '<div id="jspsych-survey-text-1" class="jspsych-survey-text-question" style="margin: 2em 0em;">';
+    html += '<p class="jspsych-survey-text">' + 'Comments'+ '</p>';
+    html += '<input type="text" id="input-1"  name="#jspsych-survey-text-response-1" data-name="" size="80" placeholder="Insert any comments about the previous task here (Not required)"></input>';
+    html += '</div>';
+
     // add submit button
     html += '<input type="submit" id="jspsych-survey-likert-next" class="jspsych-survey-likert jspsych-btn" value="'+trial.button_label+'"></input>';
 
@@ -117,6 +122,17 @@ jsPsych.plugins['survey-likert'] = (function() {
         obje[id] = response;
         Object.assign(question_data, obje);
       }
+      var id = "Q3";
+      var q_element = document.querySelector('#jspsych-survey-text-1').querySelector('textarea, input');
+      var val = q_element.value;
+      var name = q_element.attributes['data-name'].value;
+      if(name == ''){
+        name = id;
+      }
+      var obje = {};
+      obje[name] = val;
+      Object.assign(question_data, obje);
+
 
       // save data
       var trial_data = {
