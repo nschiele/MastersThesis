@@ -149,15 +149,15 @@
         var network_theory_1 =
         "<h2>Network Visualization</h2>"+
         "<p></p><p></p>"+
-        "<p style='width: 700px; text-align: left;'>Networks are a type of data that consist of vertices connected via edges. "+
+        "<p style='width: 700px; text-align: left;'>Networks are a type of data that consist of nodes connected via edges. "+
         "Additionally, networks can be either, </p>" +
         "<ul style='width: 700px; text-align: left;'><li><b>Directed</b>: The edges point in one specific direction</li> "+
-        "<li><b>Undirected</b>: The edges just connect two vertices, not in a specific direction</li></ul> "+
-        "<p style='width: 700px; text-align: left;'>There are many different examples of networks, such as a transportation network, where vertices are towns and edges indicate if there is a direct connection between two towns. "+
-        "The example below is an example of a social network, where vertices are people and edges drawn between them indicate friendships."+
+        "<li><b>Undirected</b>: The edges just connect two nodes, not in a specific direction</li></ul> "+
+        "<p style='width: 700px; text-align: left;'>There are many different examples of networks, such as a social network, where nodes are people and edges drawn between them indicate friendships. "+
+        "The example below is an airline network, where nodes are airports and the edges are drawn between two airports if the airline flies between those airports. "+
         "<div style='width: 700px;'>"+
-        "<div><img src='img/Social_Network.png' width='400' height='400'></img>"+
-        "<p style='font-size: 10px;'><i> Source: https\://miro.medium.com/max/2560/0*kmxtSPw6uiyVsUho</i></p>"+
+        "<div><img src='img/airline_example.png' width='550' height='400'></img>"+
+        "<p style='font-size: 10px;'><i> Source: https\://www.flightconnections.com/route-map-s7-airlines-s7</i></p>"+
         "<p style='width: 700px; text-align: left;'> There are different ways to represent networks, and this study aims to find which method is most effective with certain network comprehension tasks. </p>"+
         "</div>";
 
@@ -204,7 +204,7 @@
         var am_instructions_1 =
         "<h2>Adjacency Matrix Visualization</h2>"+
         "<p></p><p></p>"+
-        "<p style='width: 700px; text-align: left;'>This is an adjacency matrix visualization of a netowkr. Each node is represented as a row or column. "+
+        "<p style='width: 700px; text-align: left;'>This is an adjacency matrix visualization of a network. Each node is represented as a row or column. "+
         "The connections between nodes are visualized as a filled in box in the matrix. "+
         "</p><p style='width: 700px; text-align: left;'>The connections between nodes are directional. "+
         "The <b>row</b> a filled in box corresponds with the source of the connection, "+
@@ -374,7 +374,7 @@
          questions: [
            {prompt: "How difficult was the previous question?", labels: scale1, required: true},
           // {prompt: "Were you able to find an answer to the question? If not, why?", labels: scale2, required: true},
-           {prompt: "How confident are you in your answer to the previous question?", labels: scale3, required: true},
+           //{prompt: "How confident are you in your answer to the previous question?", labels: scale3, required: true},
 
          ],
          on_finish:function(data){

@@ -134,7 +134,7 @@
       // Select a node specifically - label all, color hightlight
       d3.select("svg")
           .append("g")
-          .attr("transform","translate(50,46)")
+          .attr("transform",nodes.length == 20 ? "translate(50,46)" : "translate(50,46)")
           .selectAll("text")
           .data(nodes)
           .enter()
@@ -164,7 +164,7 @@
 
 
           d3.select("svg")
-    			    .append("g").attr("transform","translate(32,50)")
+    			    .append("g").attr("transform",nodes.length == 20 ? "translate(30,46)" : "translate(33,46)")
     			    .selectAll("text")
     			    .data(nodes)
     			    .enter()
