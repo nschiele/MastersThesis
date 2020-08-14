@@ -39,13 +39,24 @@ svg.selectAll("*").remove();
 let width = svg.attr("width");
 let height = svg.attr("height");
 
+svg.attr("visibility","hidden");	// initially hide the graph
+
 const links = data.edges.map(d => Object.create(d));
 const nodes = data.nodes.map(d => Object.create(d));
+
 
 const simulation = d3.forceSimulation(nodes)
     .force("link", d3.forceLink(links).id(d => d.id))
     .force("charge", d3.forceManyBody().strength(-25))
-    .force("center", d3.forceCenter(width / 2, height / 2));
+    .force("center", d3.forceCenter(width / 2, height / 2))
+	// .on('end', function() {
+	// 	console.log("goodbye");
+	// 	svg.attr('visibility', 'visible')	// show the graph after the simulation ends
+	//   });
+
+	for (let i = 0; i < 1200; ++i) simulation.tick();
+
+	svg.attr("visibility","visible");
 
 
 
