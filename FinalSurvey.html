@@ -748,7 +748,15 @@
          "<b> Instructions for Common Neighbors Task </b><br></br>"+
          "<p style='text-align: left'>"+
          "The following task is to find the number of common neighbors between two specified nodes. "+
-         'A node is a "Common Neighbor" if there are edges from another node to both specified nodes OR there are edges from both specified nodes to another node. ' +
+         'A node is a "Common Neighbor" if '+
+         "<div style='text-align: left'>"+
+         '<ul>'+
+         '<li>There are edges from another node to both specified nodes</li>'+
+         "<ul><li>A and B have a common neighbor, C, if the edges (C,A) and (C,B) are in the network</li></ul>"+
+         '<li>There are edges from both specified nodes to another node.</li>' +
+         "<ul><li>A and B have a common neighbor, C, if the edges (A,C) and (B,C) are in the network</li></ul>"+
+         "</ul>" +
+         "</div>"+
          "An example problem is provided below: <p>"+
          CN_example+
          "<p>"+
@@ -835,7 +843,7 @@
            switch(TYPE){
              case BIPARTITE:
                SG_example += "<p> </p><img src='img/BP_SG_example.png'></img>"+
-               "<p>Are node B and node F in the same group?</p>"+
+               "<p>Are node B and node D in the same group?</p>"+
                sg_soln+
                hover_for_answer+
                "</div>"+
@@ -843,7 +851,7 @@
                break;
              case NODELINK:
                SG_example += "<p> </p><img src='img/NL_SG_example.png'></img>"+
-               "<p>Are node B and node F in the same group?</p>"+
+               "<p>Are node B and node D in the same group?</p>"+
                sg_soln+
                hover_for_answer+
                "</div>"+
@@ -851,7 +859,7 @@
                break;
              case ADJACENCY:
                SG_example += "<p> </p><img src='img/AM_SG_example.png'></img>"+
-               "<p>Are node B and node F in the same group?</p>"+
+               "<p>Are node B and node D in the same group?</p>"+
                sg_soln+
                hover_for_answer+
                "</div>"+
