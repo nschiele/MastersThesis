@@ -67,6 +67,42 @@
       /* create timeline */
          var timeline = [];
 
+
+         var RejectPageBrowser = {
+             type: 'html-keyboard-response',
+             stimulus: '<h2>Ineligable for Survey</h2><br></br><p>You are using a web browser that has not been confirmed to work with this survey. Please switch to Chrome or Firefox to continue.</p>',
+             choices: jsPsych.NO_KEYS
+         };
+         // Firefox 1.0+
+        var isFirefox = typeof InstallTrigger !== 'undefined';
+        // Chrome 1 - 79
+        var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+        if(!(isFirefox || isChrome)){
+          timeline.push(RejectPageBrowser);
+        }
+
+        var RejectPageMobile= {
+            type: 'html-keyboard-response',
+            stimulus: '<h2>Ineligable for Survey</h2><br></br><p>It appears you are attempting to view this survey on a mobile device. Please switch to a computer to continue.</p>',
+            choices: jsPsych.NO_KEYS
+        };
+        // Firefox 1.0+
+       var height = window.screen.height;
+       // Chrome 1 - 79
+       var width = window.screen.width;
+
+       if(height < 400  || width < 600){
+         timeline.push(RejectPageMobile);
+       }
+
+        console.log(window.screen.height);
+        console.log();
+
+
+
+
+
          /* define welcome message trial */
          var welcome = {
            type: "html-keyboard-response",

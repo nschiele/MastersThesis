@@ -164,7 +164,7 @@
 
 
           d3.select("svg")
-    			    .append("g").attr("transform",nodes.length == 20 ? "translate(30,46)" : "translate(33,46)")
+    			    .append("g").attr("transform",nodes.length == 20 ? "translate(33,47)" : "translate(33,49)")
     			    .selectAll("text")
     			    .data(nodes)
     			    .enter()
